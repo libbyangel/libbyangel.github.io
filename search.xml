@@ -4,7 +4,7 @@
     
     <entry>
       <title><![CDATA[【天翼杯安卓题二】 爱加密脱壳实战]]></title>
-      <url>/2017/10/22/aijiami-unpacker/</url>
+      <url>/undefined/%E5%AE%89%E5%8D%93%E5%AE%89%E5%85%A8/2017-10-22-aijiami-unpacker.html</url>
       <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>  这个apk使用爱加密加密，加密时间是2017.6月。这个题其实就是个脱壳题，脱完立马见flag。(出题人也太懒了)</p>
 <h3 id="壳介绍"><a href="#壳介绍" class="headerlink" title="壳介绍"></a>壳介绍</h3><p>爱加密的壳16年年底就已经开始通过 <code>hook dvmResolveClass</code> ，在调用具体方法时解密方法指令，然后将 DexFile结构体中的对应方法的 <code>md-&gt;insns</code> 指向 解密后的方法指令数据区，然后进入 <code>真正的dvmResolveClass</code>中执行指令，执行完后在重新加密指令，这样就可以防止 <code>dexhunter</code> 等工具在内存中 <code>dump dex</code> 文件。</p>
 <p>流程图</p>
