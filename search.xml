@@ -3,15 +3,6 @@
   
     
     <entry>
-      <title><![CDATA[测试文件删除]]></title>
-      <url>/2017/10/23/%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6%E5%88%A0%E9%99%A4/</url>
-      <content type="html"><![CDATA[<p>测试下文件的删除功能</p>
-]]></content>
-      
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[【天翼杯安卓题二】 爱加密脱壳实战]]></title>
       <url>/2017/10/22/aijiami-unpacker/</url>
       <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>  这个apk使用爱加密加密，加密时间是2017.6月。这个题其实就是个脱壳题，脱完立马见flag。(出题人也太懒了)</p>
