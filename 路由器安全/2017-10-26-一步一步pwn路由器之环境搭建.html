@@ -246,7 +246,7 @@
 
     
         <meta property="article:published_time" content="Thu Oct 26 2017 20:12:00 GMT+0800" />
-        <meta property="article:modified_time" content="Thu Oct 26 2017 23:01:15 GMT+0800" />
+        <meta property="article:modified_time" content="Thu Oct 26 2017 23:05:05 GMT+0800" />
     
 
     <!-- The Twitter Card protocol -->
@@ -273,7 +273,7 @@
     "mainEntityOfPage": "http://jinyu00.github.io/路由器安全/2017-10-26-一步一步pwn路由器之环境搭建.html",
     "headline": "一步一步pwn路由器之环境搭建",
     "datePublished": "Thu Oct 26 2017 20:12:00 GMT+0800",
-    "dateModified": "Thu Oct 26 2017 23:01:15 GMT+0800",
+    "dateModified": "Thu Oct 26 2017 23:05:05 GMT+0800",
     "author": {
         "@type": "Person",
         "name": "hac425",
@@ -366,7 +366,7 @@
     </button>
 
     <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
-        <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#正文"><span class="post-toc-number">2.</span> <span class="post-toc-text">正文</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-6"><a class="post-toc-link" href="#安装-与-配置-Qemu"><span class="post-toc-number">2.0.0.1.</span> <span class="post-toc-text">安装 与 配置 Qemu:</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#安装pwndbg"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">安装pwndbg</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#安装firmadyne"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">安装firmadyne</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#安装mipsrop插件"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">安装mipsrop插件</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#binwalk完整安装"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">binwalk完整安装</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#总结"><span class="post-toc-number">3.</span> <span class="post-toc-text">总结</span></a></li></ol>
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#正文"><span class="post-toc-number">2.</span> <span class="post-toc-text">正文</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-6"><a class="post-toc-link" href="#安装-与-配置-Qemu"><span class="post-toc-number">2.0.0.1.</span> <span class="post-toc-text">安装 与 配置 Qemu:</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#安装pwndbg"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">安装pwndbg</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#安装firmadyne"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">安装firmadyne</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#安装mipsrop插件"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">安装mipsrop插件</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#binwalk完整安装"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">binwalk完整安装</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#gdbserver"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">gdbserver</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#总结"><span class="post-toc-number">3.</span> <span class="post-toc-text">总结</span></a></li></ol>
     </ul>
     
 
@@ -559,6 +559,7 @@
 <p>扔到ida的plug目录即可</p>
 <p><img src="http://oy9h5q2k4.bkt.clouddn.com/1509029647708zje4hzns.png?imageslim" alt="paste image"></p>
 <h4 id="binwalk完整安装"><a href="#binwalk完整安装" class="headerlink" title="binwalk完整安装"></a>binwalk完整安装</h4><p>一定要安装完整的版本不然有些固件解不了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://blog.csdn.net/qq1084283172/article/details/65441110</div></pre></td></tr></table></figure></p>
+<h4 id="gdbserver"><a href="#gdbserver" class="headerlink" title="gdbserver"></a>gdbserver</h4><p>各种平台的静态编译版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://github.com/mzpqnxow/embedded-toolkit</div></pre></td></tr></table></figure></p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>很简单，就这样</p>
 
         
@@ -617,6 +618,14 @@
             <!-- Post Prev & Next Nav -->
             <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
     <!-- Prev Nav -->
+    
+        <a href="/uncategorized/2017-10-26-一步一步pwn路由器之路由器环境修复-rop技术分析.html" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
     
 
     <!-- Section Spacer -->
@@ -716,7 +725,7 @@
             </a>
             <ul class="dropdown-menu">
             <li>
-                <a class="sidebar_archives-link" href="/archives/2017/10/">十月 2017<span class="sidebar_archives-count">3</span></a>
+                <a class="sidebar_archives-link" href="/archives/2017/10/">十月 2017<span class="sidebar_archives-count">4</span></a>
             </ul>
         </li>
         
@@ -790,7 +799,7 @@
         <li>
             <a href="/archives">
                 文章总数
-                <span class="sidebar-badge">3</span>
+                <span class="sidebar-badge">4</span>
             </a>
         </li>
         

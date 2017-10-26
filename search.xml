@@ -3,6 +3,48 @@
   
     
     <entry>
+      <title><![CDATA[一步一步pwn路由器之路由器环境修复&&rop技术分析]]></title>
+      <url>//uncategorized/2017-10-26-%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5pwn%E8%B7%AF%E7%94%B1%E5%99%A8%E4%B9%8B%E8%B7%AF%E7%94%B1%E5%99%A8%E7%8E%AF%E5%A2%83%E4%BF%AE%E5%A4%8D-rop%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90.html</url>
+      <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>拿到路由器的固件后，第一时间肯定是去运行目标程序，一般是web服务程序。我们可以去 <code>/etc/init.d/</code> 找启动文件，或者看看一些有可能的目录。一般来说路由器的程序很少的情况下是可以直接用qemu运行起来的。我们需要做一些修复的工作，本文会介绍一个常用的方法，后面会分析在 <code>mips uclibc</code> 中常用的 <code>rop</code> 手法。</p>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><p><strong>运行环境修复</strong></p>
+<p>由于路由器运行时会去 nvram中获取配置信息，而我们的qemu中是没有该设备，路由器中的程序可能会因为没法获取配置信息而退出。我们可以使用    <code>https://github.com/zcutlip/nvram-faker</code> 配合着设置 <code>LD_PRELOAD</code> 环境变量来使用( 类似于一种 <code>hook</code> )。如果你的mips交叉编译工具链和它脚本里面的不一样就要修改它的脚本，比如</p>
+<p><img src="http://oy9h5q2k4.bkt.clouddn.com/15090309370211cupr2kg.png?imageslim" alt="paste image"><br>编译后把 <code>libnvram-faker.so</code> 和 <code>nvram.ini</code> 放到 <code>/</code> 目录，然后使用 <code>LD_PRELOAD</code>来加载。即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo chroot . ./qemu-mips-static -E LD_PRELOAD=/libnvram-faker.so  /usr/bin/httpd</div></pre></td></tr></table></figure>
+<p>如果程序还会在其他地方保错，就要自己分析程序，然后根据实际情况，在 <code>nvram-faker</code> 增加 <code>hook代码</code></p>
+<p>注：</p>
+<ul>
+<li>要注意目标应用是用的 <code>glibc</code> 还是 <code>uclibc</code> ,从而选择对应的交叉编译工具链来进行编译。</li>
+<li>先使用 <code>firmadyne</code> 运行看看，然后优先选择 <code>qemu-system-mips-static</code>来调试，实在不行用 <code>qemu-system</code></li>
+<li>如果需要某些静态编译（给生成的Makefile里面增加 <code>-static</code> 选项）的程序，建议去 <code>qemu-system</code> 编译，交叉编译太麻烦了。</li>
+</ul>
+<hr>
+<p><strong>MIPS ROP分析</strong></p>
+<p>看了 <a href="http://www.devttys0.com/2012/10/exploiting-a-mips-stack-overflow/" target="_blank" rel="external">Exploiting a MIPS Stack Overflow</a> 做的实验，因为    <code>tplink</code>上没有对应版本的固件了。于是只能自己写一个栈溢出的程序，并配合着gdb调试，来模拟整个rop过程。</p>
+<p>代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;  </div><div class="line">#include &lt;stdlib.h&gt;  </div><div class="line">#include &lt;unistd.h&gt;  </div><div class="line"></div><div class="line"></div><div class="line">void getshell()&#123;</div><div class="line">    system(&quot;sh&quot;);</div><div class="line">    sleep(1);</div><div class="line">&#125;</div><div class="line"></div><div class="line">void vulnerable_function() &#123;  </div><div class="line">    char buf[128]; </div><div class="line">    read(STDIN_FILENO, buf, 256);  </div><div class="line">&#125;  </div><div class="line">   </div><div class="line">int main(int argc, char** argv) &#123; </div><div class="line">	printf(&quot;%p\n&quot;, (int *)write); </div><div class="line">    vulnerable_function();  </div><div class="line">    write(STDOUT_FILENO, &quot;Hello, World\n&quot;, 13);  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>因为要使用 <code>qemu-mips-static</code> 来调试程序，这样就不方便找到libc的基地址。于是在程序运行时把libc中的函数地址打印出来，然后计算基地址，便于我们找到gadgets具体在内存中的位置。然后使用 uclibc的交叉编译工具链来编译。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/home/haclh/router_exploit/cross-compiler-mips/bin/mips-gcc level1.c -o level1</div></pre></td></tr></table></figure></p>
+<p>把它扔到一个路由器文件系统目录中，这样就不用单独拷贝它依赖的lib了。</p>
+<p><img src="http://oy9h5q2k4.bkt.clouddn.com/15090326039915db83l6b.png?imageslim" alt="paste image"></p>
+<p>可以看到程序使用了 uClibc，通过查看qemu的maps，找到uClibc的路径<br><img src="http://oy9h5q2k4.bkt.clouddn.com/15090327179167od9lz52.png?imageslim" alt="paste image"></p>
+<p>拿到ida中分析找 gadgets.具体可以看上面的那篇文章。找到的gadgets如下。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">rop_gad1:</div><div class="line">	LOAD:00055C60                 li      $a0, 1</div><div class="line">	LOAD:00055C64                 move    $t9, $s1</div><div class="line">	LOAD:00055C68                 jalr    $t9 ; sub_55960</div><div class="line">	LOAD:00055C5C                 lui     $s0, 2</div><div class="line"></div><div class="line">gadg_2</div><div class="line"></div><div class="line">	LOAD:0001E20C                 move    $t9, $s1</div><div class="line">	LOAD:0001E210                 lw      $ra, 0x28+var_4($sp)</div><div class="line">	LOAD:0001E214                 lw      $s2, 0x28+var_8($sp)</div><div class="line">	LOAD:0001E218                 lw      $s1, 0x28+var_C($sp)</div><div class="line">	LOAD:0001E21C                 lw      $s0, 0x28+var_10($sp)</div><div class="line">	LOAD:0001E220                 jr      $t9</div><div class="line">	LOAD:0001E224                 addiu   $sp, 0x28</div><div class="line"></div><div class="line"></div><div class="line">rop_gad3:</div><div class="line">	LOAD:000164C0                 addiu   $s2, $sp, 0x198+var_180</div><div class="line">	LOAD:000164C4                 move    $a2, $v1</div><div class="line">	LOAD:000164C8                 move    $t9, $s0</div><div class="line">	LOAD:000164CC                 jalr    $t9 ; mempcpy</div><div class="line">	LOAD:000164D0                 move    $a0, $s2</div><div class="line"></div><div class="line"></div><div class="line">rop_gad4:</div><div class="line">	LOAD:000118A4                 move    $t9, $s2</div><div class="line">	LOAD:000118A8                 jalr    $t9</div></pre></td></tr></table></figure></p>
+<p>rop的过程，和对应的sp寄存器的值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">sp:0x76fff710</div><div class="line">首先进入 rop_gad1， $s1 gadg_2</div><div class="line"></div><div class="line">sp:0x76fff710</div><div class="line">进入 gadg_2，这时$s1还是gadg_2， 从内存加载数据到寄存器s1--&gt;sleep, ra--&gt; rop_gad3, $s0---&gt;rop_gad4</div><div class="line"></div><div class="line">sp:0x76fff738</div><div class="line">再次进入 gadg_2,s1--&gt;sleep, ra--&gt; rop_gad3, $s0---&gt;rop_gad4</div><div class="line"></div><div class="line">sp:0x76fff760</div><div class="line">进入 rop_gad3， 获取栈地址到$s2,跳到 $s0</div><div class="line"></div><div class="line"></div><div class="line">进入rop_gad4，s2--&gt;0x76fff778 跳进栈中，。。。</div></pre></td></tr></table></figure></p>
+<p><strong>gdb调试的部分截图</strong></p>
+<p>断在函数返回地址被覆盖的时候，使用gdb命令，设置<code>$pc</code>寄存器的值，伪造劫持程序流程到 rop_gad1<br><img src="http://oy9h5q2k4.bkt.clouddn.com/1509033066831ysbgu293.png?imageslim" alt="paste image"></p>
+<p>汇编代码如下<br><img src="http://oy9h5q2k4.bkt.clouddn.com/1509033106631mwc1gl07.png?imageslim" alt="paste image"></p>
+<p>第一次进入rop_gad2<br><img src="http://oy9h5q2k4.bkt.clouddn.com/15090332319233l54m90b.png?imageslim" alt="paste image"></p>
+<p>第二次运行到 rop_gad2 时的寄存器状态。<br><img src="http://oy9h5q2k4.bkt.clouddn.com/1509033335464zv8t8p6f.png?imageslim" alt="paste image"></p>
+<p><code>t9</code> 指向 <code>sleep</code>函数，接下来调用 <code>sleep(1)</code> 刷新 <code>cache</code>, 便于后面指向 <code>shellcode</code>。次数的 <code>$ra</code> 为 <code>rop_gad3</code>的地址，便于在 <code>sleep</code> 返回后继续 <code>rop</code> ,获取一个栈的指针到寄存器，便于后面直接跳过去。</p>
+<p>进入rop_gad3</p>
+<p><img src="http://oy9h5q2k4.bkt.clouddn.com/1509033654570mt5p9xro.png?imageslim" alt="paste image"></p>
+<p>进入 rop_gad4,跳到栈上执行shellcode</p>
+<p><img src="http://oy9h5q2k4.bkt.clouddn.com/1509033720821o12bll0r.png?imageslim" alt="paste image"></p>
+<p>分析完毕。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>修复环境要注意使用的gcc, 必要时自己跟踪，逆向代码，修复运行环境。看了几篇mips漏洞利用的文章，rop的思路就是上面的思路，估计那就是通用思路吧，记录下来，以备不时只需。调rop的过程还是有趣的。</p>
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[一步一步pwn路由器之环境搭建]]></title>
       <url>//%E8%B7%AF%E7%94%B1%E5%99%A8%E5%AE%89%E5%85%A8/2017-10-26-%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5pwn%E8%B7%AF%E7%94%B1%E5%99%A8%E4%B9%8B%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA.html</url>
       <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>正式进入路由器的世界了。感觉路由器这块就是固件提取，运行环境修复比较麻烦，其他部分和一般的 pwn 差不多。由于大多数路由器是 mips 架构的，本文就以搭建  <code>MIPS运行、调试平台</code> 为例介绍环境的搭建。其他架构类似。</p>
@@ -33,6 +75,7 @@
 <p>扔到ida的plug目录即可</p>
 <p><img src="http://oy9h5q2k4.bkt.clouddn.com/1509029647708zje4hzns.png?imageslim" alt="paste image"></p>
 <h4 id="binwalk完整安装"><a href="#binwalk完整安装" class="headerlink" title="binwalk完整安装"></a>binwalk完整安装</h4><p>一定要安装完整的版本不然有些固件解不了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://blog.csdn.net/qq1084283172/article/details/65441110</div></pre></td></tr></table></figure></p>
+<h4 id="gdbserver"><a href="#gdbserver" class="headerlink" title="gdbserver"></a>gdbserver</h4><p>各种平台的静态编译版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://github.com/mzpqnxow/embedded-toolkit</div></pre></td></tr></table></figure></p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>很简单，就这样</p>
 ]]></content>
       
