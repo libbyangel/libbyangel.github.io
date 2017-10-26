@@ -3,6 +3,57 @@
   
     
     <entry>
+      <title><![CDATA[一步一步pwn路由器之环境搭建]]></title>
+      <url>//%E8%B7%AF%E7%94%B1%E5%99%A8%E5%AE%89%E5%85%A8/2017-10-26-%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5pwn%E8%B7%AF%E7%94%B1%E5%99%A8%E4%B9%8B%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA.html</url>
+      <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>正式进入路由器的世界了。感觉路由器这块就是固件提取，运行环境修复比较麻烦，其他部分和一般的 pwn 差不多。由于大多数路由器是 mips 架构的，本文就以搭建  <code>MIPS运行、调试平台</code> 为例介绍环境的搭建。其他架构类似。</p>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><h6 id="安装-与-配置-Qemu"><a href="#安装-与-配置-Qemu" class="headerlink" title="安装 与 配置 Qemu:"></a>安装 与 配置 Qemu:</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install qemu </div><div class="line">sudo apt-get install qemu-user-static</div><div class="line">sudo apt-get install qemu-system</div></pre></td></tr></table></figure>
+<p>配置网络</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apt-get install bridge-utils uml-utilities</div></pre></td></tr></table></figure>
+<p>修改 <code>/etc/network/interfaces</code> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">auto lo </div><div class="line">iface lo inet loopback </div><div class="line"># ubuntu 16.04的系统用ens33代替eth0 </div><div class="line">auto eth0 </div><div class="line">iface eth0  inet manual </div><div class="line">up ifconfig eth0  0.0.0.0 up </div><div class="line">auto br0</div><div class="line">iface br0 inet dhcp </div><div class="line">bridge_ports eth0 </div><div class="line">bridge_stp off </div><div class="line">bridge_maxwait 1</div></pre></td></tr></table></figure>
+<p>修改 <code>/etc/qemu-ifup</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">#!/bin/sh </div><div class="line">echo &quot;Executing /etc/qemu-ifup&quot; </div><div class="line">echo &quot;Bringing $1 for bridged mode...&quot; </div><div class="line">sudo /sbin/ifconfig $1 0.0.0.0 promisc up </div><div class="line">echo &quot;Adding $1 to br0...&quot; </div><div class="line">sudo /sbin/brctl addif br0 $1 </div><div class="line">sleep 3</div></pre></td></tr></table></figure></p>
+<p>增加权限   <code>chmod a+x /etc/qemu-ifup</code></p>
+<p>重启网络服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/etc/init.d/networking restart</div></pre></td></tr></table></figure></p>
+<p><strong>下载与运行qemu的镜像</strong></p>
+<p><em>uclibc交叉编译工具链 和 qemu系统镜像</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://www.uclibc.org/downloads/binaries/0.9.30.1/</div></pre></td></tr></table></figure></p>
+<p><img src="http://oy9h5q2k4.bkt.clouddn.com/150902839201120b9a6l3.png?imageslim" alt="paste image"></p>
+<p><em>运行示例（解压，运行即可）</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo qemu-system-mips -M malta -nographic -no-reboot -kernel &quot;zImage-mips&quot; -hda &quot;image-mips.ext2&quot; -append &quot;root=/dev/hda rw init=/usr/sbin/init.sh panic=1 PATH=/usr/bin console=ttyS0&quot; -net nic -net tap -drive file=/tmp/share.img</div></pre></td></tr></table></figure></p>
+<p><img src="http://oy9h5q2k4.bkt.clouddn.com/1509028462257nom8v9ce.png?imageslim" alt="paste image"></p>
+<p><em>openwrt预先编译好的内核，mips小端</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://downloads.openwrt.org/snapshots/trunk/malta/generic/</div></pre></td></tr></table></figure></p>
+<p><img src="http://oy9h5q2k4.bkt.clouddn.com/1509028533709dnukk3fx.png?imageslim" alt="paste image"><br><em>运行</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo qemu-system-mipsel -kernel openwrt-malta-le-vmlinux-initramfs.elf -M malta  -drive file=/tmp/share.img -net nic -net tap -nographic</div></pre></td></tr></table></figure></p>
+<p> <em>debian mips qemu镜像 </em><br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://people.debian.org/~aurel32/qemu/mips/</div></pre></td></tr></table></figure></p>
+<p><img src="http://oy9h5q2k4.bkt.clouddn.com/1509028870417m16zceue.png?imageslim" alt="paste image"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo qemu-system-mips -M malta -kernel vmlinux-2.6.32-5-4kc-malta -hda debian_squeeze_mips_standard.qcow2 -append &quot;root=/dev/sda1 console=tty0&quot; -net nic -net tap -nographic</div></pre></td></tr></table></figure>
+<p>时间比较长<br><img src="http://oy9h5q2k4.bkt.clouddn.com/15090291042864rohh3lo.png?imageslim" alt="paste image"></p>
+<h4 id="安装pwndbg"><a href="#安装pwndbg" class="headerlink" title="安装pwndbg"></a>安装pwndbg</h4><p>一个类似于 peda的gdb插件，支持多种架构，pwn最强gdb插件。用了它之后发现ida的调试简直渣渣。一张图说明一切。<br><img src="http://oy9h5q2k4.bkt.clouddn.com/15090290758339f3u420n.png?imageslim" alt="paste image"><br>安装的话按照github上的说明即可。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://github.com/pwndbg/pwndbg</div></pre></td></tr></table></figure></p>
+<p>要用来调试MIPS的话，要安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt install gdb-multiarch</div></pre></td></tr></table></figure></p>
+<p>然后按照正常的gdb使用就行。<br><img src="http://oy9h5q2k4.bkt.clouddn.com/1509029269607h15gm0sd.png?imageslim" alt="paste image"></p>
+<h4 id="安装firmadyne"><a href="#安装firmadyne" class="headerlink" title="安装firmadyne"></a>安装firmadyne</h4><p>一个路由器运行环境，傻瓜化操作，但是无法调试……<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://github.com/firmadyne/firmadyne</div></pre></td></tr></table></figure></p>
+<h4 id="安装mipsrop插件"><a href="#安装mipsrop插件" class="headerlink" title="安装mipsrop插件"></a>安装mipsrop插件</h4><p>貌似其他的rop工具都不能检测处mips的 gadgets,这个不错。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://github.com/devttys0/ida/tree/master/plugins/mipsrop</div></pre></td></tr></table></figure></p>
+<p>扔到ida的plug目录即可</p>
+<p><img src="http://oy9h5q2k4.bkt.clouddn.com/1509029647708zje4hzns.png?imageslim" alt="paste image"></p>
+<h4 id="binwalk完整安装"><a href="#binwalk完整安装" class="headerlink" title="binwalk完整安装"></a>binwalk完整安装</h4><p>一定要安装完整的版本不然有些固件解不了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://blog.csdn.net/qq1084283172/article/details/65441110</div></pre></td></tr></table></figure></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>很简单，就这样</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 路由器安全 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 路由器安全 </tag>
+            
+            <tag> mips rop </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[java应用破解之破解 jeb mips 2.3.3 ]]></title>
       <url>//java%E5%BA%94%E7%94%A8%E7%A0%B4%E8%A7%A3/2017-10-23-java%E5%BA%94%E7%94%A8%E7%A0%B4%E8%A7%A3%E4%B9%8B%E7%A0%B4%E8%A7%A3-jeb-mips-2-3-3.html</url>
       <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>由于要去学习路由器相关的漏洞利用技术的学习，而许多的路由器都是 <code>mips架构</code>  的，<code>IDA</code> 又不能反编译 <code>mips</code> , 发现 <code>jeb</code> 的新版支持 <code>mips的反编译</code> ，于是去官网申请一个试用版，试用版的限制还是比较多的，比如 <code>使用时间验证</code>，<code>没法复制粘贴</code> 等，于是想尝试看看能否破解，同时填了 <code>java破解</code> 这个坑。</p>
