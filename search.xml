@@ -3,6 +3,45 @@
   
     
     <entry>
+      <title><![CDATA[MIPS rop gadgets记录贴&&持续更新]]></title>
+      <url>//%E8%B7%AF%E7%94%B1%E5%99%A8%E5%AE%89%E5%85%A8/2017-10-27-MIPS-rop-gadgets%E8%AE%B0%E5%BD%95%E8%B4%B4-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0.html</url>
+      <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>本帖记录一些常用的,效果好的 rop gadgets.</p>
+<p><strong>uClibc</strong></p>
+<p><strong>从栈中设置<code>$t9</code> 并跳到 <code>$t9</code> 的gadgets , <code>__thread_start</code> 函数第二行</strong></p>
+<p>使用 <a href="https://jinyu00.github.io/%E8%B7%AF%E7%94%B1%E5%99%A8%E5%AE%89%E5%85%A8/2017-10-27-%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5pwn%E8%B7%AF%E7%94%B1%E5%99%A8%E4%B9%8B%E6%A0%88%E6%BA%A2%E5%87%BA%E5%AE%9E%E6%88%98.html">案例</a></p>
+<p>使用tips:</p>
+<ul>
+<li>调用函数时，进入函数内部时要求 <code>$t9</code> 指向函数的起始地址。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">lw      $t9, arg_0($sp)</div><div class="line">jalr    $t9</div></pre></td></tr></table></figure>
+<p><strong>四个组合使用，调用栈中 shellcode 的 rop_gadget , 需要可以控制 <code>$s1</code>,</strong></p>
+<p>详细分析在<a href="https://jinyu00.github.io/%E8%B7%AF%E7%94%B1%E5%99%A8%E5%AE%89%E5%85%A8/2017-10-26-%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5pwn%E8%B7%AF%E7%94%B1%E5%99%A8%E4%B9%8B%E8%B7%AF%E7%94%B1%E5%99%A8%E7%8E%AF%E5%A2%83%E4%BF%AE%E5%A4%8D-rop%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90.html">这里
+</a></p>
+<p>rop_gadget 1, <strong>设置 参数一 为 1</strong>，位于 <code>__uClibc_main</code> ,可以使用 <code>mipsrop.find(&quot;li $a0, 1&quot;)</code> 查找<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">LOAD:00055C60                 li      $a0, 1</div><div class="line">LOAD:00055C64                 move    $t9, $s1</div><div class="line">LOAD:00055C68                 jalr    $t9 ; sub_55960</div><div class="line">LOAD:00055C5C                 lui     $s0, 2</div></pre></td></tr></table></figure></p>
+<p>rop_gadget 2，<strong>从栈中设置寄存器</strong>，使用 <code>mipsrop.tail()</code> 查找<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">LOAD:0001E20C                 move    $t9, $s1</div><div class="line">LOAD:0001E210                 lw      $ra, 0x28+var_4($sp)</div><div class="line">LOAD:0001E214                 lw      $s2, 0x28+var_8($sp)</div><div class="line">LOAD:0001E218                 lw      $s1, 0x28+var_C($sp)</div><div class="line">LOAD:0001E21C                 lw      $s0, 0x28+var_10($sp)</div><div class="line">LOAD:0001E220                 jr      $t9</div><div class="line">LOAD:0001E224                 addiu   $sp, 0x28</div></pre></td></tr></table></figure></p>
+<p>rop_gadget 3，<strong>获取栈地址</strong>，使用 <code>mipsrop.stackfinder()</code> 查找</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">LOAD:000164C0                 addiu   $s2, $sp, 0x198+var_180</div><div class="line">LOAD:000164C4                 move    $a2, $v1</div><div class="line">LOAD:000164C8                 move    $t9, $s0</div><div class="line">LOAD:000164CC                 jalr    $t9 ; mempcpy</div><div class="line">LOAD:000164D0                 move    $a0, $s2</div></pre></td></tr></table></figure>
+<p>rop_gadget 4，<strong>通过 <code>$t9</code>, 跳转到 <code>$s2</code></strong>，使用 <code>mipsrop.find(&quot;move    $t9, $s2&quot;)</code> 查找, 位于 <code>readdir</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">LOAD:000118A4                 move    $t9, $s2</div><div class="line">LOAD:000118A8                 jalr    $t9</div></pre></td></tr></table></figure></p>
+<p><strong>从栈中取数据到寄存器, <code>opendir</code>  函数尾部</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">.text:0000AA6C                 lw      $ra, 0xC0+var_4($sp)</div><div class="line">.text:0000AA70                 lw      $s2, 0xC0+var_8($sp)</div><div class="line">.text:0000AA74                 lw      $s1, 0xC0+var_C($sp)</div><div class="line">.text:0000AA78                 lw      $s0, 0xC0+var_10($sp)</div><div class="line">.text:0000AA7C                 jr      $ra</div><div class="line">.text:0000AA80                 addiu   $sp, 0xC0</div><div class="line">.text:0000AA80  # End of function opendir</div></pre></td></tr></table></figure></p>
+<p><strong>从栈中设置基本上所有的重要寄存器，位于 <code>scandir</code> 尾部</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">LOAD:00011BB0                 lw      $ra, 0x40+var_4($sp)</div><div class="line">LOAD:00011BB4                 lw      $fp, 0x40+var_8($sp)</div><div class="line">LOAD:00011BB8                 lw      $s7, 0x40+var_C($sp)</div><div class="line">LOAD:00011BBC                 lw      $s6, 0x40+var_10($sp)</div><div class="line">LOAD:00011BC0                 lw      $s5, 0x40+var_14($sp)</div><div class="line">LOAD:00011BC4                 lw      $s4, 0x40+var_18($sp)</div><div class="line">LOAD:00011BC8                 lw      $s3, 0x40+var_1C($sp)</div><div class="line">LOAD:00011BCC                 lw      $s2, 0x40+var_20($sp)</div><div class="line">LOAD:00011BD0                 lw      $s1, 0x40+var_24($sp)</div><div class="line">LOAD:00011BD4                 lw      $s0, 0x40+var_28($sp)</div><div class="line">LOAD:00011BD8                 jr      $ra</div><div class="line">LOAD:00011BDC                 addiu   $sp, 0x40</div><div class="line">LOAD:00011BDC  # End of function scandir</div></pre></td></tr></table></figure></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 路由器安全 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> mips rop </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[一步一步pwn路由器之栈溢出实战]]></title>
       <url>//%E8%B7%AF%E7%94%B1%E5%99%A8%E5%AE%89%E5%85%A8/2017-10-27-%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5pwn%E8%B7%AF%E7%94%B1%E5%99%A8%E4%B9%8B%E6%A0%88%E6%BA%A2%E5%87%BA%E5%AE%9E%E6%88%98.html</url>
       <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>本文以 <a href="https://github.com/praetorian-inc/DVRF" target="_blank" rel="external">DVRF</a> 中的第一个漏洞程序 <code>stack_bof_01</code> 为例，在实战 <code>MIPS</code> 架构中栈溢出的简单利用。</p>
