@@ -144,7 +144,7 @@
     
     <entry>
       <title><![CDATA[java应用破解之破解 jeb mips 2.3.3 ]]></title>
-      <url>//java%E5%BA%94%E7%94%A8%E7%A0%B4%E8%A7%A3/jeb%E7%A0%B4%E8%A7%A3/2017-10-23-java%E5%BA%94%E7%94%A8%E7%A0%B4%E8%A7%A3%E4%B9%8B%E7%A0%B4%E8%A7%A3-jeb-mips-2-3-3.html</url>
+      <url>//jeb%E7%A0%B4%E8%A7%A3/2017-10-23-java%E5%BA%94%E7%94%A8%E7%A0%B4%E8%A7%A3%E4%B9%8B%E7%A0%B4%E8%A7%A3-jeb-mips-2-3-3.html</url>
       <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>由于要去学习路由器相关的漏洞利用技术的学习，而许多的路由器都是 <code>mips架构</code>  的，<code>IDA</code> 又不能反编译 <code>mips</code> , 发现 <code>jeb</code> 的新版支持 <code>mips的反编译</code> ，于是去官网申请一个试用版，试用版的限制还是比较多的，比如 <code>使用时间验证</code>，<code>没法复制粘贴</code> 等，于是想尝试看看能否破解，同时填了 <code>java破解</code> 这个坑。</p>
 <hr>
 <p>本文主要记录的是破解过程中的思路和使用的一些工具，技巧。文末有处理后的数据。</p>
@@ -196,8 +196,6 @@
 ]]></content>
       
         <categories>
-            
-            <category> java应用破解 </category>
             
             <category> jeb破解 </category>
             
