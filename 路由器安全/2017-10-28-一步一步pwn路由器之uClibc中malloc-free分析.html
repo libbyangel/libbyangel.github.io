@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <meta name="baidu-site-verification" content="RC70b8mZ9A" />
+    <meta name="msvalidate.01" content="325714A6172A8D425D843D8163893A54" />
+    <meta name="google-site-verification" content="QgUuEnRKG0PKdnDrOxnq55x7VxQbCiprrMJpfakMlow" />
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.0 -->
+    <script>
+        window.materialVersion = "1.5.0"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1'
+        ]
+    </script>
+
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+    <link rel="dns-prefetch" href="https://busuanzi.ibruce.info"/>
+
+
+
+        <link rel="dns-prefetch" href="https://cdn-city.livere.com"/>
+
+
+
+
+
+
+
+
+
+
+    <!-- Title -->
+    
+    <title>
+        
+            一步一步pwn路由器之uClibc中malloc&amp;&amp;free分析 | 
+        
+        穷则变，变则通，通则久
+    </title>
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="hac425">
+    <meta name="description" itemprop="description" content="">
+    <meta name="keywords" content=",uclibc源码分析,malloc && free">
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(key){try{localStorage.removeItem(key)}catch(e){}};lsloader.setLS=function(key,val){try{localStorage.setItem(key,val)}catch(e){}};lsloader.getLS=function(key){var val="";try{val=localStorage.getItem(key)}catch(e){val=""}return val};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var keys=[];for(var i=0;i<localStorage.length;i++){keys.push(localStorage.key(i))}keys.forEach(function(key){var data=lsloader.getLS(key);if(window.oldVersion){var remove=window.oldVersion.reduce(function(p,c){return p||data.indexOf("/*"+c+"*/")!==-1},false);if(remove){lsloader.removeLS(key)}}})}catch(e){}};lsloader.clean();lsloader.load=function(jsname,jspath,cssonload,isJs){if(typeof cssonload==="boolean"){isJs=cssonload;cssonload=undefined}isJs=isJs||false;cssonload=cssonload||function(){};var code;code=this.getLS(jsname);if(code&&code.indexOf(versionString)===-1){this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}if(code){var versionNumber=code.split(versionString)[0];if(versionNumber!=jspath){console.log("reload:"+jspath);this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}code=code.split(versionString)[1];if(isJs){this.jsRunSequence.push({name:jsname,code:code});this.runjs(jspath,jsname,code)}else{document.getElementById(jsname).appendChild(document.createTextNode(code));cssonload()}}else{this.requestResource(jsname,jspath,cssonload,isJs)}};lsloader.requestResource=function(name,path,cssonload,isJs){var that=this;if(isJs){this.iojs(path,name,function(path,name,code){that.setLS(name,path+versionString+code);that.runjs(path,name,code)})}else{this.iocss(path,name,function(code){document.getElementById(name).appendChild(document.createTextNode(code));that.setLS(name,path+versionString+code)},cssonload)}};lsloader.iojs=function(path,jsname,callback){var that=this;that.jsRunSequence.push({name:jsname,code:""});try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(path,jsname,xhr.response);return}}that.jsfallback(path,jsname)}};xhr.send(null)}catch(e){that.jsfallback(path,jsname)}};lsloader.iocss=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.iofonts=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.runjs=function(path,name,code){if(!!name&&!!code){for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code=code}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var script=document.createElement("script");script.appendChild(document.createTextNode(this.jsRunSequence[0].code));script.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(script);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var that=this;var script=document.createElement("script");script.src=this.jsRunSequence[0].path;script.type="text/javascript";this.jsRunSequence[0].status="loading";script.onload=function(){that.jsRunSequence.shift();if(that.jsRunSequence.length>0){that.runjs()}};document.body.appendChild(script)}};lsloader.tagLoad=function(path,name){this.jsRunSequence.push({name:name,code:"",path:path,status:"failed"});this.runjs()};lsloader.jsfallback=function(path,name){if(!!this.jsnamemap[name]){return}else{this.jsnamemap[name]=name}for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code="";this.jsRunSequence[k].status="failed";this.jsRunSequence[k].path=path}}this.runjs()};lsloader.cssfallback=function(path,name,cssonload){if(!!this.cssnamemap[name]){return}else{this.cssnamemap[name]=1}var link=document.createElement("link");link.type="text/css";link.href=path;link.rel="stylesheet";link.onload=link.onerror=cssonload;var root=document.getElementsByTagName("script")[0];root.parentNode.insertBefore(link,root)};lsloader.runInlineScript=function(scriptId,codeId){var code=document.getElementById(codeId).innerText;this.jsRunSequence.push({name:scriptId,code:code});this.runjs()};lsloader.loadCombo=function(jslist){var updateList="";var requestingModules={};for(var k in jslist){var LS=this.getLS(jslist[k].name);if(!!LS){var version=LS.split(versionString)[0];var code=LS.split(versionString)[1]}else{var version=""}if(version==jslist[k].path){this.jsRunSequence.push({name:jslist[k].name,code:code,path:jslist[k].path})}else{this.jsRunSequence.push({name:jslist[k].name,code:null,path:jslist[k].path,status:"comboloading"});requestingModules[jslist[k].name]=true;updateList+=(updateList==""?"":";")+jslist[k].path}}var that=this;if(!!updateList){var xhr=new XMLHttpRequest;xhr.open("get",combo+updateList,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){that.runCombo(xhr.response,requestingModules);return}}else{for(var i in that.jsRunSequence){if(requestingModules[that.jsRunSequence[i].name]){that.jsRunSequence[i].status="failed"}}that.runjs()}}};xhr.send(null)}this.runjs()};lsloader.runCombo=function(comboCode,requestingModules){comboCode=comboCode.split("/*combojs*/");comboCode.shift();for(var k in this.jsRunSequence){if(!!requestingModules[this.jsRunSequence[k].name]&&!!comboCode[0]){this.jsRunSequence[k].status="comboJS";this.jsRunSequence[k].code=comboCode[0];this.setLS(this.jsRunSequence[k].name,this.jsRunSequence[k].path+versionString+comboCode[0]);comboCode.shift()}}this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/girl.png">
+    <link rel="icon" sizes="192x192" href="/img/girl.png">
+    <link rel="apple-touch-icon" href="/img/girl.png">
+
+    <!--iOS -->
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="穷则变，变则通，通则久">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?MKetZV3cUTfDxvMffaOezg==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icon -->
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/js/jquery.min.js?ezyEvm8ST5CGfpA+kFFi1g==", true)</script>
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://jinyu00.github.io">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="一步一步pwn路由器之uClibc中malloc&amp;&amp;free分析 | 穷则变，变则通，通则久">
+    <meta property="og:image" content="http://jinyu00.github.io/img/girl.png" />
+    <meta property="og:description" content="">
+    <meta property="og:article:tag" content="uclibc源码分析"> <meta property="og:article:tag" content="malloc &amp;&amp; free"> 
+
+    
+        <meta property="article:published_time" content="Sat Oct 28 2017 12:21:00 GMT+0800" />
+        <meta property="article:modified_time" content="Sat Oct 28 2017 13:46:53 GMT+0800" />
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:title" content="一步一步pwn路由器之uClibc中malloc&amp;&amp;free分析 | 穷则变，变则通，通则久">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:image" content="http://jinyu00.github.io/img/girl.png">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="http://jinyu00.github.io" />
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://jinyu00.github.io/路由器安全/2017-10-28-一步一步pwn路由器之uClibc中malloc-free分析.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://jinyu00.github.io/路由器安全/2017-10-28-一步一步pwn路由器之uClibc中malloc-free分析.html",
+    "headline": "一步一步pwn路由器之uClibc中malloc&&free分析",
+    "datePublished": "Sat Oct 28 2017 12:21:00 GMT+0800",
+    "dateModified": "Sat Oct 28 2017 13:46:53 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "hac425",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/girl.png"
+        },
+        "description": "纵横捭阖，冷心为上"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "穷则变，变则通，通则久",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/girl.png"
+        }
+    },
+    "keywords": ",uclibc源码分析,malloc && free",
+    "description": "",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+        <script>
+    var _hmt = _hmt || [];
+    (function() {var hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?99747687c69d73d9102f032f78f03e96';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+    
+    
+
+    <!-- Custom Head -->
+    
+
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#正文"><span class="post-toc-number">2.</span> <span class="post-toc-text">正文</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#malloc"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">malloc</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Free"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">Free</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#总结"><span class="post-toc-number">3.</span> <span class="post-toc-text">总结</span></a></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                一步一步pwn路由器之uClibc中malloc&&free分析
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/girl.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>hac425</strong>
+        <span>10月 28, 2017</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">devices other</i>
+    <span class="visuallyhidden">devices other</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+    <li class="mdl-menu__item">在其它设备中阅读本文章</li>
+    
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASYAAAEmCAAAAADqr2IGAAAENElEQVR42u3aS27jMBAFQN//0jMHCCy/11QCu11aBYEkk6VFf9iPf67geiDAhAkTJkyYXJgwYcL09kyP+Mqf+nnPz2efvefZnfnvJr8SvQETJkyYMC1iehEag81f33/yW3UgD7ijpzBhwoQJ0zqm69CehPkkObh+9nob12tL/lO8BxMmTJgwfT3T9eZnEM/ub0vrfP2YMGHChAnTs+0loTcJ7W260H42TJgwYcKEadY2zQ8y8zZxkjrM7vzTXjgmTJgwYXozpjxIf+7ffzrfhAkTJkyY3oZpNhbTlrWzN+T3nwz6PN0pJkyYMGFawdSWhXkT9t7wPKPJx4wwYcKECdP3MLXDoCf/b0vu2QgRJkyYMGH6ZqYkOZgF3RP6YjNlsZ0nH5gwYcKEaQdTEmKT4Nr+Z4Y4K7lnjWBMmDBhwrSJ6byInbWGfyO0zxIOTJgwYcK0land/Cx1OOHOfzH/YNFnw4QJEyZMS5nybbRpwW9An7/thl44JkyYMGF6e6bZQea9m2mHhGZDPMXeMWHChAnTIqaTZmu7iLb5m1/3Dh5hwoQJE6YdTHlZOxt/yQ8j28Dfvr9OQTBhwoQJ0wqm6wfyUZi8+EzCdl76zlZ7Q4cAEyZMmDB9FNMs9J5sNUkIzovwvPAeDu5gwoQJE6a3Z5ottD1KfJRXHvJnu6gTAkyYMGHC9LFM56lAsrg2pThv++aN4KfpESZMmDBhWsqUl4jXQPkSk4PS/M13rRkTJkyYMG1lmi0oTxTyNnHSIJ4lItGdmDBhwoRpEdOsFXtdOp68Mz8KPTk6ffGZMWHChAnTCqa8SZosK8fKn83HjNqS/sWdmDBhwoRpEVN+MJkP1szatXd9qlm7GRMmTJgwbWU6H9xpEWdJQ34gmpe40eAOJkyYMGFaxNSG9nY0p23FtuVre4x6Q5MXEyZMmDC9PdN5e/Q6POd/nwf1WXKACRMmTJi2MuWFZRuk2wK1TUHaIjn/nJgwYcKEaR/TrL3bFp/t+M75SGubcGDChAkTpn1M+U/eu+EkqOef6mSgp+6FY8KECROmj2KatVBPhnXasjZJL9rVRskNJkyYMGFax3RvO3X2znx4KA/8w+IZEyZMmDAtYhqGzNEoT1uC5uXrXb+FCRMmTJg2Mc0GbvKy+SSZmA0SteG/6IVjwoQJE6YPZGqvvOXaFq7teFDeGp6V65gwYcKEaQfTrAGaD+jkAb5NR/IUpP0bEyZMmDDtYzpp5s7uOWkQJ6vNEwJMmDBhwvQ9TPkr8oUmaUGx9KRkHTV5i+NMTJgwYcL0BUwvRl7iUrZt47b3tM1fTJgwYcKEKWqPlkeVecDOG9DXH+mPSl9MmDBhwvRmTCdN3vM2bl70nhxnFrvGhAkTJkyLmNqWaN5gnR06tk/dO36ECRMmTJg2MbmihMCFCRMmTJgwYXJhwoTpXa7/6pyG9mpXLBYAAAAASUVORK5CYII=">
+    
+</ul>
+
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/malloc-free/">malloc && free</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/uclibc源码分析/">uclibc源码分析</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+        
+            <!-- Busuanzi Views -->
+            <a class="post_share-link" href="#">
+                <li class="mdl-menu__item">
+                    <span id="busuanzi_container_page_pv">
+                        <span id="busuanzi_value_page_pv"></span>&nbsp;浏览量
+                    </span>
+                </li>
+            </a>
+        
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=一步一步pwn路由器之uClibc中malloc&amp;&amp;free分析&url=http://jinyu00.github.io/路由器安全/2017-10-28-一步一步pwn路由器之uClibc中malloc-free分析.html&pic=http://jinyu00.github.io/img/girl.png&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=一步一步pwn路由器之uClibc中malloc&amp;&amp;free分析&url=http://jinyu00.github.io/路由器安全/2017-10-28-一步一步pwn路由器之uClibc中malloc-free分析.html&via=hac425" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://jinyu00.github.io/路由器安全/2017-10-28-一步一步pwn路由器之uClibc中malloc-free分析.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://jinyu00.github.io/路由器安全/2017-10-28-一步一步pwn路由器之uClibc中malloc-free分析.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>栈溢出告一段落。本文介绍下 <code>uClibc</code> 中的 <code>malloc</code> 和 <code>free</code> 实现。为堆溢出的利用准备基础。<code>uClibc</code> 是 <code>glibc</code> 的一个精简版，主要用于嵌入式设备，比如路由器就基本使用的是 <code>uClibc</code>， 简单自然效率高。所以他和一般的<code>x86</code>的堆分配机制会有些不一样。</p>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><p>uClibc 的 <code>malloc</code> 有三种实现，分别为：</p>
+<p><img src="http://oy9h5q2k4.bkt.clouddn.com/1509164969446w1f222m1.png?imageslim" alt="paste image"><br>其中 <code>malloc-standard</code> 是最近更新的。它就是把 <code>glibc</code> 的 <code>dlmalloc</code> 移植到了 <code>uClibc</code>中。<code>malloc</code> 是<code>uClibc</code>最开始版本用的 <code>malloc</code>。本文分析的也是<code>malloc</code>目录下的<code>uClibc</code>自己最初实现的 <code>malloc</code>。 因为如果是 <code>malloc-standard</code> 我们可以直接按照 一般 <code>linux</code> 中的堆漏洞相关的利用技巧来利用它。</p>
+<p>现在编译 <code>uClibc</code> 的话默认使用的是  <code>malloc-standard</code> ，我也不知道该怎么切换，所以就纯静态看看 <code>malloc</code>目录下的实现了。</p>
+<h4 id="malloc"><a href="#malloc" class="headerlink" title="malloc"></a>malloc</h4><p>从 <code>malloc</code> 的入口开始分析。 为了简单起见删掉了无关代码。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">//malloc 返回一个指定大小为 __size 的指针。</div><div class="line"></div><div class="line">/*</div><div class="line">调用 malloc 申请空间时，先检查该链表中是否有满足条件的空闲区域节点</div><div class="line">如果没有，则向内核申请内存空间，放入这个链表中，然后再重新在链表中</div><div class="line">查找一次满足条件的空闲区域节点。</div><div class="line"></div><div class="line">它实际上是调用 malloc_from_heap 从空闲区域中申请空间。</div><div class="line"></div><div class="line">*/</div><div class="line"></div><div class="line">void *</div><div class="line">malloc (size_t size)</div><div class="line">&#123;</div><div class="line">  void *mem;</div><div class="line"></div><div class="line"></div><div class="line">  //参数有效性检测。这里没有检测参数为负的情况</div><div class="line"></div><div class="line">  if (unlikely (size == 0))</div><div class="line">    goto oom;</div><div class="line"></div><div class="line"></div><div class="line">  mem = malloc_from_heap (size, &amp;__malloc_heap, &amp;__malloc_heap_lock);</div><div class="line"></div><div class="line">  return mem;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>malloc</code> 实际使用的是 <code>malloc_from_heap</code> 来分配内存。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">static void *</div><div class="line">__malloc_from_heap (size_t size, struct heap_free_area **heap</div><div class="line">		)</div><div class="line">&#123;</div><div class="line">  void *mem</div><div class="line"></div><div class="line">  /* 一个 malloc 块的结构如下：</div><div class="line">  </div><div class="line">	  +--------+---------+-------------------+</div><div class="line">	  | SIZE   |(unused) | allocation  ...   |</div><div class="line">	  +--------+---------+-------------------+</div><div class="line">	  ^ BASE			 ^ ADDR</div><div class="line">	  ^ ADDR - MALLOC_ALIGN</div><div class="line">  </div><div class="line">	  申请成功后返回的地址是 ADDR</div><div class="line">	  SIZE 表示块的大小，包括前面的那部分，也就是 MALLOC_HEADER_SIZE</div><div class="line">   */</div><div class="line">  </div><div class="line">  //实际要分配的大小，叫上 header的大小</div><div class="line">  size += MALLOC_HEADER_SIZE;</div><div class="line"></div><div class="line">//加锁</div><div class="line">  __heap_lock (heap_lock);</div><div class="line"></div><div class="line">  /* First try to get memory that&apos;s already in our heap.  */</div><div class="line">  //首先尝试从heap分配内存.这函数见前面的分析</div><div class="line">  mem = __heap_alloc (heap, &amp;size);</div><div class="line"></div><div class="line">  __heap_unlock (heap_lock);</div><div class="line">  </div><div class="line">  /*</div><div class="line">  后面是分配失败的流程，会调用系统调用从操作系统分配内存到 heap, 然后再调用__heap_alloc，进行分配，本文不在分析。</div><div class="line">  */</div></pre></td></tr></table></figure>
+<p>计算需要分配内存块的真实大小后进入  <code>__heap_alloc</code> 分配。</p>
+<p>在 <code>heap</code>中使用 <code>heap_free_area</code> 来管理空闲内存，它定义在 <code>heap.h</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">/*</div><div class="line"></div><div class="line"></div><div class="line">struct heap_free_area</div><div class="line">&#123;</div><div class="line">	size_t size;  //空闲区的大小</div><div class="line">	 //用于构造循环链表</div><div class="line">	struct heap_free_area *next, *prev;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">size 表示该空闲区域的大小，这个空闲区域的实际地址并没有用指针详细地指明，</div><div class="line">因为它就位于当前 heap_free_area 节点的前面，如下图所示：</div><div class="line"></div><div class="line">+-------------------------------+--------------------+</div><div class="line">|                               |   heap_free_area   |</div><div class="line">+-------------------------------+--------------------+</div><div class="line">\___________ 空闲空间 ___________/\___ 空闲空间信息 ___/</div><div class="line"></div><div class="line"></div><div class="line">实际可用的空闲空间大小为 size – sizeof(struct heap_free_area)</div><div class="line"></div><div class="line">指针 next, prev 分别指向下一个和上一个空间区域，</div><div class="line">所有的空闲区域就是通过许许多多这样的节点链起来的，</div><div class="line">很显然，这样组成的是一个双向链表。</div><div class="line"></div><div class="line">*/</div></pre></td></tr></table></figure></p>
+<p>所以 <code>free</code> 块在内存中的存储方式和 <code>glibc</code> 中的存储方式是不一样的。它的元数据在块的末尾，而 <code>glibc</code>中元数据在 块的开头。</p>
+<p>下面继续分析 <code>__heap_alloc</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">/* </div><div class="line">   堆heap中分配size字节的内存</div><div class="line">   */</div><div class="line">void *</div><div class="line">__heap_alloc (struct heap_free_area **heap, size_t *size)</div><div class="line">&#123;</div><div class="line">  struct heap_free_area *fa;</div><div class="line">  size_t _size = *size;</div><div class="line">  void *mem = 0;</div><div class="line"></div><div class="line">  /* 根据 HEAP_GRANULARITY 大小向上取整，在 heap.h 中定义 */</div><div class="line"></div><div class="line">  _size = HEAP_ADJUST_SIZE (_size);</div><div class="line">  //如果要分配的内存比FA结构还要小，那就调整它为FA大小</div><div class="line">  </div><div class="line"></div><div class="line">  if (_size &lt; sizeof (struct heap_free_area))</div><div class="line">   </div><div class="line"></div><div class="line"> //根据HEAP_GRANULARITY 对齐 sizeof(double)</div><div class="line">    _size = HEAP_ADJUST_SIZE (sizeof (struct heap_free_area));</div><div class="line"></div><div class="line">	//遍历堆中的FA，找出有合适大小的空闲区,在空闲区域链表中查找大小大于等于 _SIZE 的节点 </div><div class="line">  for (fa = *heap; fa; fa = fa-&gt;next)</div><div class="line">    if (fa-&gt;size &gt;= _size)</div><div class="line">      &#123;</div><div class="line">		/* Found one!  */</div><div class="line">		mem = HEAP_FREE_AREA_START (fa);</div><div class="line">		 //从该空间中分得内存。这函数前面已经分析过了</div><div class="line">		*size = __heap_free_area_alloc (heap, fa, _size);</div><div class="line">		break;</div><div class="line">      &#125;</div><div class="line">  return mem;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>找到<code>大小 &gt;= 请求size</code> 的 <code>heap_free_area</code>，然后进入 <code>__heap_free_area_alloc 分配</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">/* </div><div class="line">   该函数从fa所表示的heap_free_area中，分配size大小的内存</div><div class="line">   */</div><div class="line">static __inline__ size_t</div><div class="line">__heap_free_area_alloc (struct heap_free_area **heap,</div><div class="line">			struct heap_free_area *fa, size_t size)</div><div class="line">&#123;</div><div class="line">  size_t fa_size = fa-&gt;size;</div><div class="line"></div><div class="line">  //如果该空闲区剩余的内存太少。将它全部都分配出去</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">  if (fa_size &lt; size + HEAP_MIN_FREE_AREA_SIZE)</div><div class="line">    &#123;</div><div class="line">    ////将fa从heap中删除</div><div class="line">      __heap_delete (heap, fa);</div><div class="line">      /* Remember that we&apos;ve alloced the whole area.  */</div><div class="line">      size = fa_size;</div><div class="line">    &#125;</div><div class="line">  else</div><div class="line">	  /* 如果这个区域中还有空闲空间，就把 heap_free_area 节点中</div><div class="line">		   的 size 减小 size就可以了：</div><div class="line">	  </div><div class="line">		   分配前：</div><div class="line">		 __________ 空闲空间 __________ 	__ 空闲空间信息 __</div><div class="line">		/							   \ /					\</div><div class="line">		+-------------------------------+--------------------+</div><div class="line">		|								|	heap_free_area	 |</div><div class="line">		+-------------------------------+--------------------+</div><div class="line">		\__________ fa-&gt;size __________/</div><div class="line">	  </div><div class="line">		   分配后：</div><div class="line">			 ___ 已分配 __	  __ 空闲空间 __   __ 空闲空间信息 __</div><div class="line">		/			  \ /			   \ /					\</div><div class="line">		+-------------------------------+--------------------+</div><div class="line">		|			   |				|	heap_free_area	 |</div><div class="line">		+-------------------------------+--------------------+</div><div class="line">		\____ size ___/ \__ fa-&gt;size __/</div><div class="line">	  </div><div class="line">		*/</div><div class="line"></div><div class="line">    fa-&gt;size = fa_size - size;</div><div class="line"></div><div class="line">  return size;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注释很清晰了。所以如果我们有一个堆溢出，我们就需要覆盖到下面空闲空间的 <code>heap_free_area</code> 中的 指针，才能实现 <code>uClibc</code> 中的 <code>unlink</code> 攻击（当然还要其他条件的配合）,另外我们也知道了在 <code>malloc</code> 的时候，找到合适的 <code>heap_free_area</code>  后，只需要修改 <code>heap_free_area</code> 的 size位就可以实现了分配，所以在 <code>malloc</code> 中是无法 触发类似 <code>unlink</code> 的攻击的。</p>
+<p>下面进入 <code>free</code></p>
+<h4 id="Free"><a href="#Free" class="headerlink" title="Free"></a>Free</h4><p>首先看 free 函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">void</div><div class="line">free (void *mem)</div><div class="line">&#123;</div><div class="line">  free_to_heap (mem, &amp;__malloc_heap, &amp;__malloc_heap_lock);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>直接调用了 <code>free_to_heap</code> 函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">static void</div><div class="line">__free_to_heap (void *mem, struct heap_free_area **heap)</div><div class="line">&#123;</div><div class="line">  size_t size;</div><div class="line">  struct heap_free_area *fa;</div><div class="line">   /* 检查 mem 是否合法 */</div><div class="line">  if (unlikely (! mem))</div><div class="line">    return;</div><div class="line">/* 获取 mem 指向的 malloc 块的的实际大小和起始地址 */</div><div class="line">  size = MALLOC_SIZE (mem); //获取块的真实大小</div><div class="line">  mem = MALLOC_BASE (mem); //获取块的基地址</div><div class="line">  __heap_lock (heap_lock); //加锁</div><div class="line">  /* 把 mem 指向的空间放到 heap 中  */</div><div class="line">  fa = __heap_free (heap, mem, size);</div><div class="line"></div><div class="line"> //如果FA中的空闲区超过  MALLOC_UNMAP_THRESHOLD。就要进行内存回收了,涉及 brk, 看不懂，就不说了，感觉和利用也没啥关系。</div></pre></td></tr></table></figure>
+<p>首先获得了 内存块的起始地址和大小，然后调用 <code>__heap_free</code> 把要 <code>free</code> 的内存放到 <code>heap</code> 中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">/*</div><div class="line">语义上的理解是释放掉从mem开始的size大小的内存。换句话说，就是把从从mem开始的，size大小的内存段，映射回heap。</div><div class="line">*/</div><div class="line">struct heap_free_area *</div><div class="line">__heap_free (struct heap_free_area **heap, void *mem, size_t size)</div><div class="line">&#123;</div><div class="line">  struct heap_free_area *fa, *prev_fa;</div><div class="line">  </div><div class="line">  //拿到 mem的 结束地址</div><div class="line">  void *end = (char *)mem + size;</div><div class="line"></div><div class="line"></div><div class="line">  /* 空闲区域链表是按照地址从小到大排列的，这个循环是为了找到 mem 应该插入的位置 */</div><div class="line">  for (prev_fa = 0, fa = *heap; fa; prev_fa = fa, fa = fa-&gt;next)</div><div class="line">    if (unlikely (HEAP_FREE_AREA_END (fa) &gt;= mem))</div><div class="line">      break;</div><div class="line"></div><div class="line">  if (fa &amp;&amp; HEAP_FREE_AREA_START (fa) &lt;= end)</div><div class="line">   //这里是相邻的情况,不可能小于，所以进入这的就是 HEAP_FREE_AREA_START (fa) == end, 则 mem, 和 fa所表示的内存块相邻</div><div class="line">    &#123;</div><div class="line">    /* </div><div class="line">		如果 fa 和 mem 是连续的，那么将 mem 空间并入 fa 节点（增加fa的大小即可）管理, 如图所示，地址从左至右依次增大</div><div class="line">	</div><div class="line">		  +---------------+--------------+---------------+</div><div class="line">		  | 	  |prev_fa| 	 mem	 |fa_chunk| fa   |</div><div class="line">		  +---------------+--------------+---------------+</div><div class="line">						  ^______________________________^ </div><div class="line">	</div><div class="line">		prev_fa 与 fa 的链接关系不变，只要更改 fa 中的 size 就可以了</div><div class="line">	   */</div><div class="line"></div><div class="line">      size_t fa_size = fa-&gt;size + size;</div><div class="line">      if (HEAP_FREE_AREA_START (fa) == end)</div><div class="line">	&#123;</div><div class="line">	  if (prev_fa &amp;&amp; mem == HEAP_FREE_AREA_END (prev_fa))</div><div class="line">	    &#123;</div><div class="line"></div><div class="line">		 /* 如果 fa 前一个节点和 mem 是连续的，那么将 fa 前一个节点的空间</div><div class="line">			     也并入 fa 节点管理</div><div class="line"></div><div class="line">			   +---------------+---------------+--------------+---------------+</div><div class="line">			   |       |pre2_fa|       |prev_fa|      mem     |       |   fa  |</div><div class="line">			   +---------------+---------------+--------------+---------------+</div><div class="line">		                       ^______________________________________________^</div><div class="line"></div><div class="line">			    将 prev_fa 从链表中移出，同时修改 fa 中的 size</div><div class="line">          */</div><div class="line">	      fa_size += prev_fa-&gt;size;</div><div class="line">	      __heap_link_free_area_after (heap, fa, prev_fa-&gt;prev);</div><div class="line">	    &#125;</div><div class="line">	&#125;</div><div class="line">      else</div><div class="line">	&#123;</div><div class="line">	  struct heap_free_area *next_fa = fa-&gt;next;</div><div class="line"></div><div class="line">	   /* 如果 mem 与 next_fa 是连续的，将 mem 并入 next_fa 节点管理</div><div class="line"></div><div class="line"> 	   +---------------+--------------+--------------+---------------+</div><div class="line">	   |       |prev_fa|      |   fa  |      mem     |       |next_fa|</div><div class="line">	   +---------------+--------------+--------------+---------------+</div><div class="line">                       ^_____________________________________________^ </div><div class="line"></div><div class="line">	   将 fa 从链表中移出，同时修改 next_fa 中的 size</div><div class="line">	  */</div><div class="line">	  if (next_fa &amp;&amp; end == HEAP_FREE_AREA_START (next_fa))</div><div class="line">	    &#123;</div><div class="line">	      fa_size += next_fa-&gt;size;</div><div class="line">	      __heap_link_free_area_after (heap, next_fa, prev_fa);</div><div class="line">	      fa = next_fa;</div><div class="line">	    &#125;</div><div class="line">	  else</div><div class="line">	    /* FA can&apos;t be merged; move the descriptor for it to the tail-end</div><div class="line">	       of the memory block.  */</div><div class="line"></div><div class="line"></div><div class="line">	      /* 如果 mem 与 next_fa 不连续，将 fa 结点移到 mem 尾部</div><div class="line"></div><div class="line"> 	   +---------------+--------------+--------------+---------------+</div><div class="line">	   |       |prev_fa|      |   fa  | mem | unused |       |next_fa|</div><div class="line">	   +---------------+--------------+--------------+---------------+</div><div class="line">                          ^___________________^^________________________^</div><div class="line"></div><div class="line">	       需要重新链接 fa 与 prev_fa 和 next_fa 的关系</div><div class="line">            */</div><div class="line">	    &#123;</div><div class="line">	      /* The new descriptor is at the end of the extended block,</div><div class="line">		 SIZE bytes later than the old descriptor.  */</div><div class="line">	      fa = (struct heap_free_area *)((char *)fa + size);</div><div class="line">	      /* Update links with the neighbors in the list.  */</div><div class="line">	      __heap_link_free_area (heap, fa, prev_fa, next_fa);</div><div class="line">	    &#125;</div><div class="line">	&#125;</div><div class="line">      fa-&gt;size = fa_size;</div><div class="line">    &#125;</div><div class="line">  else</div><div class="line">     /* 如果fa和 mem之间有空隙或者 mem&gt; HEAP_FREE_AREA_END (fa)，那么可以简单地</div><div class="line">       把 mem 插入 prev_fa 和 fa之间 */</div><div class="line">    fa = __heap_add_free_area (heap, mem, size, prev_fa, fa);</div><div class="line"></div><div class="line">  return fa;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>__heap_link_free_area</code> 就是简单的链表操作。没有什么用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">static __inline__ void</div><div class="line">__heap_link_free_area (struct heap_free_area **heap, struct heap_free_area *fa,</div><div class="line">		       struct heap_free_area *prev,</div><div class="line">		       struct heap_free_area *next)</div><div class="line">&#123;</div><div class="line">  fa-&gt;next = next;</div><div class="line">  fa-&gt;prev = prev;</div><div class="line"></div><div class="line">  if (prev)</div><div class="line">    prev-&gt;next = fa;</div><div class="line">  else</div><div class="line">    *heap = fa;</div><div class="line">  if (next)</div><div class="line">    next-&gt;prev = fa;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>感觉唯一可能的利用点在于,前后相邻的情况，需要先把 <code>prev_fa</code> 拆链表，我们如果可以伪造 <code>prev_fa-&gt;prev</code>，就可以得到一次内存写的机会，不过也只能写入 <code>fa</code> 的值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">fa_size += prev_fa-&gt;size;</div><div class="line">__heap_link_free_area_after (heap, fa, prev_fa-&gt;prev);</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">static __inline__ void</div><div class="line">__heap_link_free_area_after (struct heap_free_area **heap,</div><div class="line">			     struct heap_free_area *fa,</div><div class="line">			     struct heap_free_area *prev)</div><div class="line">&#123;</div><div class="line">  if (prev)</div><div class="line">    prev-&gt;next = fa;</div><div class="line">  else</div><div class="line">    *heap = fa;</div><div class="line">  fa-&gt;prev = prev;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>怎么感觉没有可利用的点，还是太菜了。以后如果遇到实例一定要补充进来。</p>
+<p>tips:</p>
+<ul>
+<li><p>分析库源码时看不太懂可以先编译出来，然后配合这 <code>ida</code> 看，所以要编译成 <code>x86</code> 或者 <code>arm</code> 方便 <code>f5</code> 对照看。比如这次，我把 <code>uClibc</code> 编译成 <code>arm</code> 版后，使用 <code>ida</code> 一看，发现 <code>uClibc</code> 怎么使用的是 <code>glibc</code> 的那一套，一看源码目录发现，原来它已经切换到 <code>glibc</code> 这了。</p>
+</li>
+<li><p>忽然想起来交叉编译环境感觉可以用 docker 部署，网上一搜发现一大把，瞬间爆炸。</p>
+</li>
+</ul>
+<p>参考链接：</p>
+<p><a href="http://blog.chinaunix.net/uid-20543183-id-1930765.html" target="_blank" rel="external">http://blog.chinaunix.net/uid-20543183-id-1930765.html</a></p>
+<p><a href="http://hily.me/blog/2007/06/uclibc-malloc-free/" target="_blank" rel="external">http://hily.me/blog/2007/06/uclibc-malloc-free/</a></p>
+
+        
+                <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 3px solid #F44336;background-color: #F5F5F5;list-style: none;">
+                    <p><strong>
+                         
+                            <a> 转载注明来源</a>
+                        </strong>
+                        <br>
+                        <strong>本文链接：</strong><a href="http://jinyu00.github.io/路由器安全/2017-10-28-一步一步pwn路由器之uClibc中malloc-free分析.html">http://jinyu00.github.io/路由器安全/2017-10-28-一步一步pwn路由器之uClibc中malloc-free分析.html</a>
+                    </p>
+                </blockquote>
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 来必力 -->
+<div id="livere-comment">
+    <!-- 来必力City版安装代码 -->
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMTQ2OC84MDMy">
+<script type="text/javascript">
+   (function(d, s) {
+       var j, e = d.getElementsByTagName(s)[0];
+
+       if (typeof LivereTower === 'function') { return; }
+
+       j = d.createElement(s);
+       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+       j.async = true;
+
+       e.parentNode.insertBefore(j, e);
+   })(document, 'script');
+</script>
+<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+</div>
+<!-- City版安装代码已完成 -->
+</div>
+<style>
+    #livere-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/路由器安全/2017-10-28-一步一步pwn路由器之rop技术实战.html" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/girl.png" alt="hac425's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        327164983@qq.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/10/">十月 2017<span class="sidebar_archives-count">9</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="/categories/jeb破解/">jeb破解<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/categories/安卓安全/">安卓安全<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/路由器安全/">路由器安全<span class="sidebar_archives-count">6</span></a>
+            </ul>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+
+    <!-- Pages  -->
+    
+        <li>
+            <a href="/about" title="关于我">
+                
+                    <i class="material-icons sidebar-material-icons">person</i>
+                
+                关于我
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/timeline" title="时间轴">
+                
+                    <i class="material-icons sidebar-material-icons">timeline</i>
+                
+                时间轴
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/links" title="友情链接">
+                
+                    <i class="material-icons sidebar-material-icons">people</i>
+                
+                友情链接
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/tags" title="标签云">
+                
+                    <i class="material-icons sidebar-material-icons">invert_colors</i>
+                
+                标签云
+            </a>
+        </li>
+        
+    
+
+    <!-- Article Number  -->
+    
+        <li>
+            <a href="/archives">
+                文章总数
+                <span class="sidebar-badge">9</span>
+            </a>
+        </li>
+        
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+
+<!-- Theme Material -->
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+        <a href="http://weibo.com/u/5691483590" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-weibo">
+                <span class="visuallyhidden">Weibo</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+        <a href="https://github.com/jinyu00" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-github">
+                <span class="visuallyhidden">Github</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+    
+    <!-- V2EX -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©<script type="text/javascript">var fd = new Date();document.write("&nbsp;" + fd.getFullYear() + "&nbsp;");</script>穷则变，变则通，通则久
+            
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?wgjW/HuQG9JDgvPDPoRAng==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/js/js.min.js?V/53wGualMuiPM3xoetD5Q==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+    <!-- Busuanzi -->
+    <script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+   
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('<link rel="stylesheet" href="/css/uc.css">');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.0 | https://github.com/viosey/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

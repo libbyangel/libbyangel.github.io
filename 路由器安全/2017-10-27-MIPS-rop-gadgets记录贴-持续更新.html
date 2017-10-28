@@ -246,7 +246,7 @@
 
     
         <meta property="article:published_time" content="Fri Oct 27 2017 15:01:00 GMT+0800" />
-        <meta property="article:modified_time" content="Fri Oct 27 2017 15:28:46 GMT+0800" />
+        <meta property="article:modified_time" content="Sat Oct 28 2017 12:19:26 GMT+0800" />
     
 
     <!-- The Twitter Card protocol -->
@@ -273,7 +273,7 @@
     "mainEntityOfPage": "http://jinyu00.github.io/路由器安全/2017-10-27-MIPS-rop-gadgets记录贴-持续更新.html",
     "headline": "MIPS rop gadgets记录贴&&持续更新",
     "datePublished": "Fri Oct 27 2017 15:01:00 GMT+0800",
-    "dateModified": "Fri Oct 27 2017 15:28:46 GMT+0800",
+    "dateModified": "Sat Oct 28 2017 12:19:26 GMT+0800",
     "author": {
         "@type": "Person",
         "name": "hac425",
@@ -549,7 +549,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">LOAD:000164C0                 addiu   $s2, $sp, 0x198+var_180</div><div class="line">LOAD:000164C4                 move    $a2, $v1</div><div class="line">LOAD:000164C8                 move    $t9, $s0</div><div class="line">LOAD:000164CC                 jalr    $t9 ; mempcpy</div><div class="line">LOAD:000164D0                 move    $a0, $s2</div></pre></td></tr></table></figure>
 <p>rop_gadget 4，<strong>通过 <code>$t9</code>, 跳转到 <code>$s2</code></strong>，使用 <code>mipsrop.find(&quot;move    $t9, $s2&quot;)</code> 查找, 位于 <code>readdir</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">LOAD:000118A4                 move    $t9, $s2</div><div class="line">LOAD:000118A8                 jalr    $t9</div></pre></td></tr></table></figure></p>
 <p><strong>从栈中取数据到寄存器, <code>opendir</code>  函数尾部</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">.text:0000AA6C                 lw      $ra, 0xC0+var_4($sp)</div><div class="line">.text:0000AA70                 lw      $s2, 0xC0+var_8($sp)</div><div class="line">.text:0000AA74                 lw      $s1, 0xC0+var_C($sp)</div><div class="line">.text:0000AA78                 lw      $s0, 0xC0+var_10($sp)</div><div class="line">.text:0000AA7C                 jr      $ra</div><div class="line">.text:0000AA80                 addiu   $sp, 0xC0</div><div class="line">.text:0000AA80  # End of function opendir</div></pre></td></tr></table></figure></p>
-<p><strong>从栈中设置基本上所有的重要寄存器，位于 <code>scandir</code> 尾部</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">LOAD:00011BB0                 lw      $ra, 0x40+var_4($sp)</div><div class="line">LOAD:00011BB4                 lw      $fp, 0x40+var_8($sp)</div><div class="line">LOAD:00011BB8                 lw      $s7, 0x40+var_C($sp)</div><div class="line">LOAD:00011BBC                 lw      $s6, 0x40+var_10($sp)</div><div class="line">LOAD:00011BC0                 lw      $s5, 0x40+var_14($sp)</div><div class="line">LOAD:00011BC4                 lw      $s4, 0x40+var_18($sp)</div><div class="line">LOAD:00011BC8                 lw      $s3, 0x40+var_1C($sp)</div><div class="line">LOAD:00011BCC                 lw      $s2, 0x40+var_20($sp)</div><div class="line">LOAD:00011BD0                 lw      $s1, 0x40+var_24($sp)</div><div class="line">LOAD:00011BD4                 lw      $s0, 0x40+var_28($sp)</div><div class="line">LOAD:00011BD8                 jr      $ra</div><div class="line">LOAD:00011BDC                 addiu   $sp, 0x40</div><div class="line">LOAD:00011BDC  # End of function scandir</div></pre></td></tr></table></figure></p>
+<p><strong>从栈中设置基本上所有的重要寄存器，位于 <code>scandir</code> 或者 <code>scandir64</code>尾部</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">LOAD:00011BB0                 lw      $ra, 0x40+var_4($sp)</div><div class="line">LOAD:00011BB4                 lw      $fp, 0x40+var_8($sp)</div><div class="line">LOAD:00011BB8                 lw      $s7, 0x40+var_C($sp)</div><div class="line">LOAD:00011BBC                 lw      $s6, 0x40+var_10($sp)</div><div class="line">LOAD:00011BC0                 lw      $s5, 0x40+var_14($sp)</div><div class="line">LOAD:00011BC4                 lw      $s4, 0x40+var_18($sp)</div><div class="line">LOAD:00011BC8                 lw      $s3, 0x40+var_1C($sp)</div><div class="line">LOAD:00011BCC                 lw      $s2, 0x40+var_20($sp)</div><div class="line">LOAD:00011BD0                 lw      $s1, 0x40+var_24($sp)</div><div class="line">LOAD:00011BD4                 lw      $s0, 0x40+var_28($sp)</div><div class="line">LOAD:00011BD8                 jr      $ra</div><div class="line">LOAD:00011BDC                 addiu   $sp, 0x40</div><div class="line">LOAD:00011BDC  # End of function scandir</div></pre></td></tr></table></figure></p>
 
         
                 <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 3px solid #F44336;background-color: #F5F5F5;list-style: none;">
@@ -714,7 +714,7 @@
             </a>
             <ul class="dropdown-menu">
             <li>
-                <a class="sidebar_archives-link" href="/archives/2017/10/">十月 2017<span class="sidebar_archives-count">8</span></a>
+                <a class="sidebar_archives-link" href="/archives/2017/10/">十月 2017<span class="sidebar_archives-count">9</span></a>
             </ul>
         </li>
         
@@ -732,7 +732,7 @@
             </a>
             <ul class="dropdown-menu">
                 <li>
-                <a class="sidebar_archives-link" href="/categories/jeb破解/">jeb破解<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/categories/安卓安全/">安卓安全<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/路由器安全/">路由器安全<span class="sidebar_archives-count">5</span></a>
+                <a class="sidebar_archives-link" href="/categories/jeb破解/">jeb破解<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/categories/安卓安全/">安卓安全<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/路由器安全/">路由器安全<span class="sidebar_archives-count">6</span></a>
             </ul>
         </li>
         
@@ -788,7 +788,7 @@
         <li>
             <a href="/archives">
                 文章总数
-                <span class="sidebar-badge">8</span>
+                <span class="sidebar-badge">9</span>
             </a>
         </li>
         
