@@ -45,6 +45,9 @@
       <title><![CDATA[破解 jeb  2.3.7 demo]]></title>
       <url>//jeb%E7%A0%B4%E8%A7%A3/2017-10-27-%E7%A0%B4%E8%A7%A3-jeb-2-3-7-demo.html</url>
       <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>使用的技术和上文的一样。</p>
+<p><code>mips</code> 版本的修改版</p>
+<p>百度云：</p>
+<p>链接: <a href="https://pan.baidu.com/s/1c1Oh0x6" target="_blank" rel="external">https://pan.baidu.com/s/1c1Oh0x6</a> 密码: ekjj</p>
 <h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><p><strong>安卓版</strong></p>
 <p><code>jeb-2.3.7.201710262129-JEBDecompilerDemo-121820464987384338</code></p>
 <p>重新编译一个 <code>com.pnfsoftware.jeb.client.Licensing</code></p>
