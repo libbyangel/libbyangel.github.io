@@ -4,6 +4,34 @@
 
     
   <url>
+    <loc>http://jinyu00.github.io//%E6%96%87%E4%BB%B6patch/2017-11-07-%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6patch%E6%8A%80%E6%9C%AF-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0.html</loc>
+    <lastmod>2017-11-07T14:45:27.643Z</lastmod>
+    <data>
+        <display>
+        <title>可执行文件patch技术&&持续更新</title>
+        <pubTime>2017-11-07T13:51:00.000Z</pubTime>
+        
+        <tag>patch</tag>
+         
+        <tag>elf patch</tag>
+         
+        <tag>pe patch</tag>
+         
+        <tag>mach-o patch</tag>
+         
+        <tag>ctf</tag>
+         
+         
+           
+             
+              <breadCrumb title="文件patch" url="http://jinyu00.github.io/categories/%E6%96%87%E4%BB%B6patch/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://jinyu00.github.io//ctf/2017-11-05-%E4%B8%8A%E6%B5%B7ctf2017-pwn100-pwn200.html</loc>
     <lastmod>2017-11-06T06:38:08.089Z</lastmod>
     <data>
