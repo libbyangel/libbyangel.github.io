@@ -4,137 +4,20 @@
 
     
   <url>
-    <loc>http://jinyu00.github.io//%E6%96%87%E4%BB%B6patch/2017-11-07-%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6patch%E6%8A%80%E6%9C%AF-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0.html</loc>
-    <lastmod>2017-11-07T14:45:27.643Z</lastmod>
+    <loc>http://jinyu00.github.io//uncategorized/2017-11-27-hello.html</loc>
+    <lastmod>2017-11-27T14:41:30.881Z</lastmod>
     <data>
         <display>
-        <title>可执行文件patch技术&&持续更新</title>
-        <pubTime>2017-11-07T13:51:00.000Z</pubTime>
+        <title>hello</title>
+        <pubTime>2017-11-27T14:41:10.000Z</pubTime>
         
-        <tag>patch</tag>
-         
-        <tag>elf patch</tag>
-         
-        <tag>pe patch</tag>
-         
-        <tag>mach-o patch</tag>
-         
-        <tag>ctf</tag>
-         
          
            
-             
-              <breadCrumb title="文件patch" url="http://jinyu00.github.io/categories/%E6%96%87%E4%BB%B6patch/"/>
-          
         </display>
     </data>
     </url>
 
     
-  <url>
-    <loc>http://jinyu00.github.io//ctf/2017-11-05-%E4%B8%8A%E6%B5%B7ctf2017-pwn100-pwn200.html</loc>
-    <lastmod>2017-11-06T06:38:08.089Z</lastmod>
-    <data>
-        <display>
-        <title>上海ctf2017 pwn100 && pwn200</title>
-        <pubTime>2017-11-05T15:32:00.000Z</pubTime>
-        
-        <tag>heap</tag>
-         
-         
-           
-             
-              <breadCrumb title="ctf" url="http://jinyu00.github.io/categories/ctf/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://jinyu00.github.io//jeb%E7%A0%B4%E8%A7%A3/2017-10-27-%E7%A0%B4%E8%A7%A3-jeb-2-3-7-demo.html</loc>
-    <lastmod>2017-11-02T11:30:06.378Z</lastmod>
-    <data>
-        <display>
-        <title>破解 jeb  2.3.7 demo</title>
-        <pubTime>2017-10-27T02:15:00.000Z</pubTime>
-        
-        <tag>jeb 2.3.7</tag>
-         
-         
-           
-             
-              <breadCrumb title="jeb破解" url="http://jinyu00.github.io/categories/jeb%E7%A0%B4%E8%A7%A3/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://jinyu00.github.io//%E8%B7%AF%E7%94%B1%E5%99%A8%E5%AE%89%E5%85%A8/2017-10-27-MIPS-rop-gadgets%E8%AE%B0%E5%BD%95%E8%B4%B4-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0.html</loc>
-    <lastmod>2017-10-30T11:10:19.211Z</lastmod>
-    <data>
-        <display>
-        <title>MIPS rop gadgets记录贴&&持续更新</title>
-        <pubTime>2017-10-27T07:01:00.000Z</pubTime>
-        
-        <tag>mips rop</tag>
-         
-         
-           
-             
-              <breadCrumb title="路由器安全" url="http://jinyu00.github.io/categories/%E8%B7%AF%E7%94%B1%E5%99%A8%E5%AE%89%E5%85%A8/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://jinyu00.github.io//jeb%E7%A0%B4%E8%A7%A3/2017-10-23-java%E5%BA%94%E7%94%A8%E7%A0%B4%E8%A7%A3%E4%B9%8B%E7%A0%B4%E8%A7%A3-jeb-mips-2-3-3.html</loc>
-    <lastmod>2017-10-27T03:13:28.223Z</lastmod>
-    <data>
-        <display>
-        <title>java应用破解之破解 jeb mips 2.3.3 </title>
-        <pubTime>2017-10-23T14:25:00.000Z</pubTime>
-        
-        <tag>jeb</tag>
-         
-        <tag>破解</tag>
-         
-        <tag>jar包调试</tag>
-         
-         
-           
-             
-              <breadCrumb title="jeb破解" url="http://jinyu00.github.io/categories/jeb%E7%A0%B4%E8%A7%A3/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-    
-  <url>
-    <loc>http://jinyu00.github.io//%E5%AE%89%E5%8D%93%E5%AE%89%E5%85%A8/2017-10-22-aijiami-unpacker.html</loc>
-    <lastmod>2017-10-23T13:05:33.522Z</lastmod>
-    <data>
-        <display>
-        <title>【天翼杯安卓题二】 爱加密脱壳实战</title>
-        <pubTime>2017-10-22T11:33:00.000Z</pubTime>
-        
-        <tag>安卓脱壳</tag>
-         
-         
-           
-             
-              <breadCrumb title="安卓安全" url="http://jinyu00.github.io/categories/%E5%AE%89%E5%8D%93%E5%AE%89%E5%85%A8/"/>
-          
-        </display>
-    </data>
-    </url>
-
     
     
     
