@@ -3,6 +3,26 @@
   
     
     <entry>
+      <title><![CDATA[text]]></title>
+      <url>//text/2017-12-15-text.html</url>
+      <content type="html"></content>
+      
+        <categories>
+            
+            <category> text </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> xxxx </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[hello]]></title>
       <url>//uncategorized/2017-11-27-hello.html</url>
       <content type="html"><![CDATA[<p>hello, 樊大傻</p>
